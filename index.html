@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gamepicker Fixtures Breakdown</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Upcoming Fixtures Breakdown</h1>
+      <p class="subtitle">Select a league, fixture, and lookback window to generate averages.</p>
+    </header>
+
+    <section class="controls" aria-label="Fixture controls">
+      <label>
+        League
+        <select id="leagueSelect" aria-label="League"></select>
+      </label>
+
+      <label>
+        Fixture
+        <select id="fixtureSelect" aria-label="Fixture"></select>
+      </label>
+
+      <label>
+        Lookback window
+        <select id="windowSelect" aria-label="Lookback window">
+          <option value="60">60 days</option>
+          <option value="90" selected>90 days</option>
+          <option value="120">120 days</option>
+          <option value="150">150 days</option>
+        </select>
+      </label>
+
+      <button id="generateBtn" type="button">Generate breakdown</button>
+    </section>
+
+    <section id="status" class="status" aria-live="polite"></section>
+
+    <section id="tables" class="tables" aria-live="polite"></section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
