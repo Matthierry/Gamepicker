@@ -1,0 +1,143 @@
+:root {
+  color-scheme: light;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  background-color: #f5f7fb;
+  color: #1b1f2a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f5f7fb;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+header h1 {
+  margin-bottom: 0.25rem;
+  font-size: 2rem;
+}
+
+.subtitle {
+  color: #5b6274;
+  margin-top: 0;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  align-items: end;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+select,
+button {
+  font-size: 0.95rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #d3d8e4;
+  background: #ffffff;
+}
+
+select:disabled {
+  background: #eef1f7;
+  color: #9aa2b2;
+}
+
+button {
+  cursor: pointer;
+  background: #1f4bd9;
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+}
+
+button:disabled {
+  background: #9db0ef;
+  cursor: not-allowed;
+}
+
+.status {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #5b6274;
+}
+
+.tables {
+  margin-top: 2rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.table-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.table-card h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table-card th,
+.table-card td {
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.table-card th {
+  background: #f3f5fb;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.table-card tbody tr:nth-child(even) {
+  background: #fafbff;
+}
+
+.empty-state {
+  padding: 1.5rem;
+  text-align: center;
+  color: #7b8295;
+}
+
+.note {
+  font-size: 0.85rem;
+  color: #6a7185;
+  margin-top: 0.5rem;
+}
