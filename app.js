@@ -120,6 +120,10 @@ function filterMatches(matches, fixtureDateISO, windowDays) {
   });
 }
 
+function isValidNumber(value) {
+  return value !== null && value !== undefined && !Number.isNaN(value);
+}
+
 function computeAggregates(matches, { homeTeam, awayTeam } = {}) {
   const metrics = {
     FTHG: { sum: 0, count: 0 },
@@ -153,13 +157,15 @@ function computeAggregates(matches, { homeTeam, awayTeam } = {}) {
     if (match.FTR === "H") homeWin += 1;
     if (match.FTR === "D") draw += 1;
     if (match.FTR === "A") awayWin += 1;
-    const totalGoals = (match.FTHG ?? 0) + (match.FTAG ?? 0);
-    if (totalGoals > 2.5) over25 += 1;
-    if (totalGoals < 2.5) under25 += 1;
+    if (isValidNumber(match.FTHG) && isValidNumber(match.FTAG)) {
+      const totalGoals = match.FTHG + match.FTAG;
+      if (totalGoals > 2.5) over25 += 1;
+      if (totalGoals < 2.5) under25 += 1;
+    }
 
     Object.keys(metrics).forEach((key) => {
       const value = match[key];
-      if (value === null || value === undefined || Number.isNaN(value)) {
+      if (!isValidNumber(value)) {
         return;
       }
       metrics[key].sum += value;
@@ -194,27 +200,27 @@ function computeLeagueCombined(matches) {
   let combinedSotCount = 0;
 
   matches.forEach((match) => {
-    if (match.FTHG !== null && match.FTHG !== undefined) {
+    if (isValidNumber(match.FTHG)) {
       combinedGoalsSum += match.FTHG;
       combinedGoalsCount += 1;
     }
-    if (match.FTAG !== null && match.FTAG !== undefined) {
+    if (isValidNumber(match.FTAG)) {
       combinedGoalsSum += match.FTAG;
       combinedGoalsCount += 1;
     }
-    if (match.HS !== null && match.HS !== undefined) {
+    if (isValidNumber(match.HS)) {
       combinedShotsSum += match.HS;
       combinedShotsCount += 1;
     }
-    if (match.AS !== null && match.AS !== undefined) {
+    if (isValidNumber(match.AS)) {
       combinedShotsSum += match.AS;
       combinedShotsCount += 1;
     }
-    if (match.HST !== null && match.HST !== undefined) {
+    if (isValidNumber(match.HST)) {
       combinedSotSum += match.HST;
       combinedSotCount += 1;
     }
-    if (match.AST !== null && match.AST !== undefined) {
+    if (isValidNumber(match.AST)) {
       combinedSotSum += match.AST;
       combinedSotCount += 1;
     }
@@ -224,6 +230,38 @@ function computeLeagueCombined(matches) {
     combinedGoals: combinedGoalsCount ? combinedGoalsSum / combinedGoalsCount : null,
     combinedShots: combinedShotsCount ? combinedShotsSum / combinedShotsCount : null,
     combinedSot: combinedSotCount ? combinedSotSum / combinedSotCount : null
+  };
+}
+
+function computeLeagueAwayAverages(aggregates) {
+  return {
+    averages: {
+      ...aggregates.averages,
+      FTHG: aggregates.averages.FTAG,
+      HS: aggregates.averages.AS,
+      HST: aggregates.averages.AST,
+      FTAG: aggregates.averages.FTHG,
+      AS: aggregates.averages.HS,
+      AST: aggregates.averages.HST
+    },
+    totals: { ...aggregates.totals }
+  };
+}
+
+function computeCombinedAverages(matches, baseAggregates) {
+  const combined = computeLeagueCombined(matches);
+  return {
+    averages: {
+      ...baseAggregates.averages,
+      FTHG: combined.combinedGoals,
+      FTAG: combined.combinedGoals,
+      HS: combined.combinedShots,
+      AS: combined.combinedShots,
+      HST: combined.combinedSot,
+      AST: combined.combinedSot
+    },
+    totals: { ...baseAggregates.totals },
+    combined
   };
 }
 
@@ -349,9 +387,9 @@ function renderTables({ homeAgg, awayAgg, leagueAgg, leagueAwayAgg, combinedAgg,
 
   const combinedColumns = [
     ...baseColumns,
-    { key: "combinedGoals", label: "Combined Goals/Team" },
-    { key: "combinedShots", label: "Combined Shots/Team" },
-    { key: "combinedSot", label: "Combined SOT/Team" }
+    { key: "combinedGoals", label: "Overall Goals/Team" },
+    { key: "combinedShots", label: "Overall Shots/Team" },
+    { key: "combinedSot", label: "Overall SOT/Team" }
   ];
   const combinedRows = buildRowsFromAggregates(combinedAgg).map((row) => ({
     ...row,
@@ -365,7 +403,7 @@ function renderTables({ homeAgg, awayAgg, leagueAgg, leagueAwayAgg, combinedAgg,
       "League Combined Average",
       combinedRows,
       combinedColumns,
-      "Combined metrics flatten home/away values per team."
+      "Overall metrics flatten home/away values per team."
     )
   );
 }
@@ -400,9 +438,10 @@ async function generateBreakdown() {
   const homeAgg = computeAggregates(matchesInWindow, { homeTeam: selectedFixture.homeTeam });
   const awayAgg = computeAggregates(matchesInWindow, { awayTeam: selectedFixture.awayTeam });
   const leagueAgg = computeAggregates(matchesInWindow);
-  const leagueAwayAgg = computeAggregates(matchesInWindow);
-  const combinedAgg = computeAggregates(matchesInWindow);
-  const combinedExtras = computeLeagueCombined(matchesInWindow);
+  const leagueAwayAgg = computeLeagueAwayAverages(leagueAgg);
+  const combinedAggWithExtras = computeCombinedAverages(matchesInWindow, leagueAgg);
+  const combinedAgg = combinedAggWithExtras;
+  const combinedExtras = combinedAggWithExtras.combined;
 
   if (matchesInWindow.length === 0) {
     setStatus("No matches found in this lookback window. Showing empty tables.");
