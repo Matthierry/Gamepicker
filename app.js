@@ -19,6 +19,11 @@ const numberFormatter = new Intl.NumberFormat("en-GB", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2
 });
+const percentFormatter = new Intl.NumberFormat("en-GB", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1
+});
+const EPS = 0.0001;
 
 function formatNumber(value) {
   if (value === null || value === undefined || Number.isNaN(value)) {
@@ -32,6 +37,99 @@ function formatInteger(value) {
     return "0";
   }
   return String(Math.round(value));
+}
+
+function formatPercent(value) {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return "N/A";
+  }
+  return `${percentFormatter.format(value * 100)}%`;
+}
+
+function safeDiv(numerator, denominator) {
+  const safeNumerator = isValidNumber(numerator) ? numerator : 0;
+  const safeDenominator = isValidNumber(denominator) ? denominator : 0;
+  return safeNumerator / Math.max(safeDenominator, EPS);
+}
+
+function clampNonNeg(value) {
+  if (!isValidNumber(value)) {
+    return 0;
+  }
+  return Math.max(0, value);
+}
+
+function applyDeviationControl(xGoalsByForm, goalsVAvg) {
+  const base = isValidNumber(xGoalsByForm) ? xGoalsByForm : 0;
+  const delta = isValidNumber(goalsVAvg) ? goalsVAvg : 0;
+  let multiplier = 1;
+
+  if (delta >= 2.0) multiplier = 0.75;
+  else if (delta >= 1.75) multiplier = 0.8;
+  else if (delta >= 1.5) multiplier = 0.85;
+  else if (delta >= 1.25) multiplier = 0.9;
+  else if (delta >= 1.0) multiplier = 0.9;
+  else if (delta >= 0.75) multiplier = 0.95;
+  else if (delta >= 0.5) multiplier = 0.975;
+  else if (delta >= 0.25) multiplier = 0.99;
+  else if (delta <= -2.0) multiplier = 1.25;
+  else if (delta <= -1.75) multiplier = 1.2;
+  else if (delta <= -1.5) multiplier = 1.15;
+  else if (delta <= -1.25) multiplier = 1.1;
+  else if (delta <= -1.0) multiplier = 1.1;
+  else if (delta <= -0.75) multiplier = 1.05;
+  else if (delta <= -0.5) multiplier = 1.025;
+  else if (delta <= -0.25) multiplier = 1.01;
+
+  return clampNonNeg(base * multiplier);
+}
+
+function poissonProbabilities(lambda, maxGoals = 9) {
+  const safeLambda = clampNonNeg(lambda);
+  const probs = [];
+  let cumulative = 0;
+
+  let current = Math.exp(-safeLambda);
+  probs.push(current);
+  cumulative += current;
+
+  for (let k = 1; k <= maxGoals; k += 1) {
+    current *= safeLambda / k;
+    probs.push(current);
+    cumulative += current;
+  }
+
+  const probs9Plus = Math.max(0, 1 - cumulative);
+  return { probs, probs9Plus };
+}
+
+function buildCorrectScoreGrid(homeProbs, awayProbs, home9Plus, away9Plus) {
+  const size = homeProbs.length;
+  const grid = [];
+  let homeWin = 0;
+  let draw = 0;
+  let awayWin = 0;
+
+  for (let i = 0; i <= size; i += 1) {
+    const row = [];
+    const homeProb = i === size ? home9Plus : homeProbs[i];
+    for (let j = 0; j <= size; j += 1) {
+      const awayProb = j === size ? away9Plus : awayProbs[j];
+      const value = homeProb * awayProb;
+      row.push(value);
+      if (i > j) homeWin += value;
+      else if (i === j) draw += value;
+      else awayWin += value;
+    }
+    grid.push(row);
+  }
+
+  return {
+    grid,
+    homeWin,
+    draw,
+    awayWin
+  };
 }
 
 function toDate(value) {
@@ -365,6 +463,311 @@ function getBaseColumns() {
   ];
 }
 
+function buildPredictionRows(predictions) {
+  return [
+    { label: "Attack Score (Goals)", home: predictions.HomeAttackScore, away: predictions.AwayAttackScore },
+    { label: "Defence Score (Goals)", home: predictions.HomeDefenceScore, away: predictions.AwayDefenceScore },
+    { label: "xG (Goals Model)", home: predictions.Home_xG_Goals, away: predictions.Away_xG_Goals },
+    { label: "xShots", home: predictions.Home_xShots, away: predictions.Away_xShots },
+    { label: "xSOT", home: predictions.Home_xSOT, away: predictions.Away_xSOT },
+    { label: "Goals/Shot For", home: predictions.HomeGoalsPerShotFor, away: predictions.AwayGoalsPerShotFor },
+    { label: "Goals/SOT For", home: predictions.HomeGoalsPerSOTFor, away: predictions.AwayGoalsPerSOTFor },
+    { label: "Goals/Shot Against", home: predictions.HomeGoalsPerShotAgainst, away: predictions.AwayGoalsPerShotAgainst },
+    { label: "Goals/SOT Against", home: predictions.HomeGoalsPerSOTAgainst, away: predictions.AwayGoalsPerSOTAgainst },
+    { label: "Goals from xShots", home: predictions.HomeGoalsBy_xShots, away: predictions.AwayGoalsBy_xShots },
+    { label: "Goals from xSOT", home: predictions.HomeGoalsBy_xSOT, away: predictions.AwayGoalsBy_xSOT },
+    { label: "Weighted xGoals (Form)", home: predictions.Home_xGoalsByForm, away: predictions.Away_xGoalsByForm },
+    { label: "Goals vs League Avg", home: predictions.HGoals_v_Avg, away: predictions.AGoals_v_Avg },
+    { label: "Deviation-Controlled λ", home: predictions.HGoalsFormDevi, away: predictions.AGoalsFormDevi }
+  ];
+}
+
+function buildPredictionTable(predictions) {
+  const card = document.createElement("div");
+  card.className = "table-card";
+  const heading = document.createElement("h2");
+  heading.textContent = "Scores & Expected Outputs";
+  card.appendChild(heading);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "table-wrapper";
+
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  ["Metric", "Home", "Away"].forEach((label) => {
+    const th = document.createElement("th");
+    th.textContent = label;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  buildPredictionRows(predictions).forEach((row) => {
+    const tr = document.createElement("tr");
+    const labelCell = document.createElement("td");
+    labelCell.textContent = row.label;
+    labelCell.className = "metric-label";
+    tr.appendChild(labelCell);
+
+    const homeCell = document.createElement("td");
+    homeCell.textContent = formatNumber(row.home);
+    tr.appendChild(homeCell);
+
+    const awayCell = document.createElement("td");
+    awayCell.textContent = formatNumber(row.away);
+    tr.appendChild(awayCell);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+
+  wrapper.appendChild(table);
+  card.appendChild(wrapper);
+  return card;
+}
+
+function buildPoissonTable(title, probs, probs9Plus) {
+  const card = document.createElement("div");
+  card.className = "table-card";
+  const heading = document.createElement("h2");
+  heading.textContent = title;
+  card.appendChild(heading);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "table-wrapper";
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  ["Goals", "Probability"].forEach((label) => {
+    const th = document.createElement("th");
+    th.textContent = label;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  probs.forEach((value, index) => {
+    const tr = document.createElement("tr");
+    const goalsCell = document.createElement("td");
+    goalsCell.textContent = String(index);
+    tr.appendChild(goalsCell);
+
+    const probCell = document.createElement("td");
+    probCell.textContent = formatPercent(value);
+    tr.appendChild(probCell);
+    tbody.appendChild(tr);
+  });
+
+  const plusRow = document.createElement("tr");
+  const plusLabel = document.createElement("td");
+  plusLabel.textContent = "9+";
+  plusRow.appendChild(plusLabel);
+  const plusValue = document.createElement("td");
+  plusValue.textContent = formatPercent(probs9Plus);
+  plusRow.appendChild(plusValue);
+  tbody.appendChild(plusRow);
+
+  table.appendChild(tbody);
+  wrapper.appendChild(table);
+  card.appendChild(wrapper);
+  return card;
+}
+
+function buildCorrectScoreTable(predictions) {
+  const card = document.createElement("div");
+  card.className = "table-card";
+  const heading = document.createElement("h2");
+  heading.textContent = "Correct Score Matrix";
+  card.appendChild(heading);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "table-wrapper matrix-wrapper";
+  const table = document.createElement("table");
+
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  const emptyCell = document.createElement("th");
+  emptyCell.textContent = "Home \\ Away";
+  headerRow.appendChild(emptyCell);
+  for (let i = 0; i <= 9; i += 1) {
+    const th = document.createElement("th");
+    th.textContent = String(i);
+    headerRow.appendChild(th);
+  }
+  const plusTh = document.createElement("th");
+  plusTh.textContent = "9+";
+  headerRow.appendChild(plusTh);
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  predictions.correctScoreGrid.grid.forEach((row, rowIndex) => {
+    const tr = document.createElement("tr");
+    const rowLabel = document.createElement("td");
+    rowLabel.textContent = rowIndex === 10 ? "9+" : String(rowIndex);
+    rowLabel.className = "metric-label";
+    tr.appendChild(rowLabel);
+    row.forEach((value) => {
+      const td = document.createElement("td");
+      td.textContent = formatPercent(value);
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrapper.appendChild(table);
+  card.appendChild(wrapper);
+
+  const summary = document.createElement("div");
+  summary.className = "summary";
+  summary.innerHTML = `
+    <strong>Summary</strong>
+    <div>Home Win: ${formatPercent(predictions.correctScoreGrid.homeWin)}</div>
+    <div>Draw: ${formatPercent(predictions.correctScoreGrid.draw)}</div>
+    <div>Away Win: ${formatPercent(predictions.correctScoreGrid.awayWin)}</div>
+  `;
+  card.appendChild(summary);
+  return card;
+}
+
+function computePredictions(homeAgg, awayAgg, leagueAgg) {
+  const avg = (source, key) => (isValidNumber(source.averages[key]) ? source.averages[key] : 0);
+
+  const LeagueAvgHomeGoals = avg(leagueAgg, "FTHG");
+  const LeagueAvgAwayGoals = avg(leagueAgg, "FTAG");
+  const LeagueAvgHomeShots = avg(leagueAgg, "HS");
+  const LeagueAvgAwayShots = avg(leagueAgg, "AS");
+  const LeagueAvgHomeSOT = avg(leagueAgg, "HST");
+  const LeagueAvgAwaySOT = avg(leagueAgg, "AST");
+
+  const AvgHomeFTHG = avg(homeAgg, "FTHG");
+  const AvgHomeFTAG = avg(homeAgg, "FTAG");
+  const AvgHomeHS = avg(homeAgg, "HS");
+  const AvgHomeAS = avg(homeAgg, "AS");
+  const AvgHomeHST = avg(homeAgg, "HST");
+  const AvgHomeAST = avg(homeAgg, "AST");
+
+  const AvgAwayFTHG = avg(awayAgg, "FTHG");
+  const AvgAwayFTAG = avg(awayAgg, "FTAG");
+  const AvgAwayHS = avg(awayAgg, "HS");
+  const AvgAwayAS = avg(awayAgg, "AS");
+  const AvgAwayHST = avg(awayAgg, "HST");
+  const AvgAwayAST = avg(awayAgg, "AST");
+
+  const HomeAttackScore = safeDiv(AvgHomeFTHG, LeagueAvgHomeGoals);
+  const HomeDefenceScore = safeDiv(AvgHomeFTAG, LeagueAvgAwayGoals);
+  const AwayAttackScore = safeDiv(AvgAwayFTAG, LeagueAvgAwayGoals);
+  const AwayDefenceScore = safeDiv(AvgAwayFTHG, LeagueAvgHomeGoals);
+
+  const Home_xG_Goals = HomeAttackScore * AwayDefenceScore * LeagueAvgHomeGoals;
+  const Away_xG_Goals = AwayAttackScore * HomeDefenceScore * LeagueAvgAwayGoals;
+
+  const HomeShotsForScore = safeDiv(AvgHomeHS, LeagueAvgHomeShots);
+  const HomeShotsAgainstScore = safeDiv(AvgHomeAS, LeagueAvgAwayShots);
+  const AwayShotsForScore = safeDiv(AvgAwayAS, LeagueAvgAwayShots);
+  const AwayShotsAgainstScore = safeDiv(AvgAwayHS, LeagueAvgHomeShots);
+
+  const Home_xShots = HomeShotsForScore * AwayShotsAgainstScore * LeagueAvgHomeShots;
+  const Away_xShots = AwayShotsForScore * HomeShotsAgainstScore * LeagueAvgAwayShots;
+
+  const HomeGoalsPerShotFor = safeDiv(AvgHomeFTHG, AvgHomeHS);
+  const HomeGoalsPerSOTFor = safeDiv(AvgHomeFTHG, AvgHomeHST);
+  const HomeGoalsPerShotAgainst = safeDiv(AvgHomeFTAG, AvgHomeAS);
+  const HomeGoalsPerSOTAgainst = safeDiv(AvgHomeFTAG, AvgHomeAST);
+
+  const AwayGoalsPerShotFor = safeDiv(AvgAwayFTAG, AvgAwayAS);
+  const AwayGoalsPerSOTFor = safeDiv(AvgAwayFTAG, AvgAwayAST);
+  const AwayGoalsPerShotAgainst = safeDiv(AvgAwayFTHG, AvgAwayHS);
+  const AwayGoalsPerSOTAgainst = safeDiv(AvgAwayFTHG, AvgAwayHST);
+
+  const HomeSOTForScore = safeDiv(AvgHomeHST, LeagueAvgHomeSOT);
+  const HomeSOTAgainstScore = safeDiv(AvgHomeAST, LeagueAvgAwaySOT);
+  const AwaySOTForScore = safeDiv(AvgAwayAST, LeagueAvgAwaySOT);
+  const AwaySOTAgainstScore = safeDiv(AvgAwayHST, LeagueAvgHomeSOT);
+
+  const Home_xSOT = HomeSOTForScore * AwaySOTAgainstScore * LeagueAvgHomeSOT;
+  const Away_xSOT = AwaySOTForScore * HomeSOTAgainstScore * LeagueAvgAwaySOT;
+
+  const HomeGoalsBy_xShots = Home_xShots * AwayGoalsPerShotAgainst;
+  const AwayGoalsBy_xShots = Away_xShots * HomeGoalsPerShotAgainst;
+
+  const HomeGoalsBy_xSOT = Home_xSOT * AwayGoalsPerSOTAgainst;
+  const AwayGoalsBy_xSOT = Away_xSOT * HomeGoalsPerSOTAgainst;
+
+  const Home_xGoalsByForm = 0.5 * Home_xG_Goals + 0.25 * HomeGoalsBy_xShots + 0.25 * HomeGoalsBy_xSOT;
+  const Away_xGoalsByForm = 0.5 * Away_xG_Goals + 0.25 * AwayGoalsBy_xShots + 0.25 * AwayGoalsBy_xSOT;
+
+  const HGoals_v_Avg = Home_xGoalsByForm - LeagueAvgHomeGoals;
+  const AGoals_v_Avg = Away_xGoalsByForm - LeagueAvgAwayGoals;
+
+  const HGoalsFormDevi = applyDeviationControl(Home_xGoalsByForm, HGoals_v_Avg);
+  const AGoalsFormDevi = applyDeviationControl(Away_xGoalsByForm, AGoals_v_Avg);
+
+  const homePoisson = poissonProbabilities(HGoalsFormDevi);
+  const awayPoisson = poissonProbabilities(AGoalsFormDevi);
+  const correctScoreGrid = buildCorrectScoreGrid(
+    homePoisson.probs,
+    awayPoisson.probs,
+    homePoisson.probs9Plus,
+    awayPoisson.probs9Plus
+  );
+
+  return {
+    HomeAttackScore,
+    HomeDefenceScore,
+    AwayAttackScore,
+    AwayDefenceScore,
+    Home_xG_Goals,
+    Away_xG_Goals,
+    Home_xShots,
+    Away_xShots,
+    Home_xSOT,
+    Away_xSOT,
+    HomeGoalsPerShotFor,
+    HomeGoalsPerSOTFor,
+    HomeGoalsPerShotAgainst,
+    HomeGoalsPerSOTAgainst,
+    AwayGoalsPerShotFor,
+    AwayGoalsPerSOTFor,
+    AwayGoalsPerShotAgainst,
+    AwayGoalsPerSOTAgainst,
+    HomeGoalsBy_xShots,
+    AwayGoalsBy_xShots,
+    HomeGoalsBy_xSOT,
+    AwayGoalsBy_xSOT,
+    Home_xGoalsByForm,
+    Away_xGoalsByForm,
+    HGoals_v_Avg,
+    AGoals_v_Avg,
+    HGoalsFormDevi,
+    AGoalsFormDevi,
+    homePoisson,
+    awayPoisson,
+    correctScoreGrid
+  };
+}
+
+function renderPredictions(predictions) {
+  const section = document.createElement("section");
+  section.className = "predictions";
+
+  const heading = document.createElement("h2");
+  heading.className = "section-title";
+  heading.textContent = "Predictions";
+  section.appendChild(heading);
+
+  const cards = document.createElement("div");
+  cards.className = "tables";
+  cards.appendChild(buildPredictionTable(predictions));
+  cards.appendChild(buildPoissonTable("Home Goal Probabilities", predictions.homePoisson.probs, predictions.homePoisson.probs9Plus));
+  cards.appendChild(buildPoissonTable("Away Goal Probabilities", predictions.awayPoisson.probs, predictions.awayPoisson.probs9Plus));
+  cards.appendChild(buildCorrectScoreTable(predictions));
+  section.appendChild(cards);
+  return section;
+}
+
 function renderTables({ homeAgg, awayAgg, leagueAgg, leagueAwayAgg, combinedAgg, combinedExtras }) {
   clearTables();
   const baseColumns = getBaseColumns();
@@ -406,6 +809,9 @@ function renderTables({ homeAgg, awayAgg, leagueAgg, leagueAwayAgg, combinedAgg,
       "Overall metrics flatten home/away values per team."
     )
   );
+
+  const predictions = computePredictions(homeAgg, awayAgg, leagueAgg);
+  tablesEl.appendChild(renderPredictions(predictions));
 }
 
 async function loadLeagueMatches(leagueCode) {
