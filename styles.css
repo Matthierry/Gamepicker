@@ -126,6 +126,12 @@ button:disabled {
   z-index: 1;
 }
 
+.metric-label {
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .table-card tbody tr:nth-child(even) {
   background: #fafbff;
 }
@@ -140,4 +146,25 @@ button:disabled {
   font-size: 0.85rem;
   color: #6a7185;
   margin-top: 0.5rem;
+}
+
+.predictions .section-title {
+  font-size: 1.5rem;
+  margin: 0 0 1rem;
+}
+
+.predictions .tables {
+  margin-top: 0;
+}
+
+.matrix-wrapper table {
+  min-width: 720px;
+}
+
+.summary {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #384052;
+  display: grid;
+  gap: 0.35rem;
 }
