@@ -1,6 +1,22 @@
 {
-  "E0": [],
-  "E1": [],
+  "E0": [
+    {
+      "id": "e0-2025-08-10-arsenal-manchester-city",
+      "league": "E0",
+      "dateISO": "2025-08-10",
+      "homeTeam": "Arsenal",
+      "awayTeam": "Manchester City"
+    }
+  ],
+  "E1": [
+    {
+      "id": "e1-2025-08-11-leeds-sunderland",
+      "league": "E1",
+      "dateISO": "2025-08-11",
+      "homeTeam": "Leeds",
+      "awayTeam": "Sunderland"
+    }
+  ],
   "E2": [],
   "E3": []
 }
