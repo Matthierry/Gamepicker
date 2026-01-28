@@ -63,7 +63,10 @@ function parseCSV(text) {
     fields.push(current);
 
     if (!headers) {
-      headers = fields.map((field) => field.trim());
+      headers = fields.map((field, index) => {
+        const trimmed = field.trim();
+        return index === 0 ? trimmed.replace(/^\uFEFF/, "") : trimmed;
+      });
       return;
     }
 
@@ -108,6 +111,12 @@ function toNumber(value) {
   if (!trimmed) return null;
   const num = Number(trimmed);
   return Number.isNaN(num) ? null : num;
+}
+
+function normalizeLeagueCode(value) {
+  if (value === null || value === undefined) return null;
+  const normalized = String(value).trim().toUpperCase();
+  return normalized || null;
 }
 
 function findOddsHeader(headers, { includes, fallback }) {
@@ -186,13 +195,15 @@ async function buildLeagueData() {
     const oddsHeaders = buildOddsHeaders(headers);
 
     rows.forEach((row) => {
-      if (row.Div && !LEAGUES[row.Div]) {
+      const leagueCode = normalizeLeagueCode(row.Div || row.div);
+      if (leagueCode && !LEAGUES[leagueCode]) {
         return;
       }
       const normalized = normalizeMatch(row, headers, oddsHeaders);
       if (!normalized) return;
-      const league = normalized.Div || entry.league;
+      const league = leagueCode || entry.league;
       if (!LEAGUES[league]) return;
+      normalized.Div = league;
       leagueRows[league].push(normalized);
     });
   }
@@ -214,7 +225,8 @@ async function buildFixturesIndex() {
   });
 
   rows.forEach((row) => {
-    const league = row.Div || row.div;
+    const league = normalizeLeagueCode(row.Div || row.div);
+    if (!league) return;
     if (!LEAGUES[league]) return;
     const dateISO = parseDateToISO(row.Date || row.date);
     if (!dateISO) return;
