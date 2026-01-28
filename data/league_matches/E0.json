@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "dateISO": "2025-08-01",
+    "Div": "E0",
+    "HomeTeam": "Arsenal",
+    "AwayTeam": "Chelsea",
+    "FTHG": 2,
+    "FTAG": 1,
+    "HS": 10,
+    "HST": 5,
+    "AS": 8,
+    "AST": 3,
+    "FTR": "H",
+    "AvgH": 1.8,
+    "AvgD": 3.4,
+    "AvgA": 4.2,
+    "AvgOver25": 1.95,
+    "AvgUnder25": 1.85
+  },
+  {
+    "dateISO": "2025-08-05",
+    "Div": "E0",
+    "HomeTeam": "Man City",
+    "AwayTeam": "Arsenal",
+    "FTHG": 0,
+    "FTAG": 0,
+    "HS": 12,
+    "HST": 6,
+    "AS": 7,
+    "AST": 2,
+    "FTR": "D",
+    "AvgH": 1.7,
+    "AvgD": 3.6,
+    "AvgA": 4.5,
+    "AvgOver25": 2,
+    "AvgUnder25": 1.8
+  }
+]
