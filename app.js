@@ -438,7 +438,7 @@ function buildTableCard(title, rows, columns, note) {
   return card;
 }
 
-function buildFormCard(homeAgg, awayAgg) {
+function buildFormComparisonCard(homeAgg, awayAgg) {
   const card = document.createElement("div");
   card.className = "table-card";
 
@@ -466,8 +466,29 @@ function buildFormCard(homeAgg, awayAgg) {
     { title: "Games Under 2.5", home: homeAgg.totals.under25, away: awayAgg.totals.under25, format: "int" }
   ];
 
-  const rowsWrapper = document.createElement("div");
-  rowsWrapper.className = "form-rows";
+  const grid = document.createElement("div");
+  grid.className = "form-grid";
+
+  const headerRow = document.createElement("div");
+  headerRow.className = "form-row form-header";
+
+  const headerHome = document.createElement("div");
+  headerHome.className = "form-home";
+  headerHome.textContent = "Home";
+  headerRow.appendChild(headerHome);
+
+  const headerTitle = document.createElement("div");
+  headerTitle.className = "form-title";
+  headerTitle.textContent = "Stat";
+  headerRow.appendChild(headerTitle);
+
+  const headerAway = document.createElement("div");
+  headerAway.className = "form-away";
+  headerAway.textContent = "Away";
+  headerRow.appendChild(headerAway);
+
+  grid.appendChild(headerRow);
+
   rows.forEach((row) => {
     const rowEl = document.createElement("div");
     rowEl.className = "form-row";
@@ -475,7 +496,7 @@ function buildFormCard(homeAgg, awayAgg) {
     const homeValue = document.createElement("div");
     homeValue.className = "form-home";
     homeValue.textContent = row.format === "int"
-      ? formatIntegerOrNA(row.home)
+      ? formatInteger(row.home)
       : formatNumber(row.home);
     rowEl.appendChild(homeValue);
 
@@ -487,14 +508,14 @@ function buildFormCard(homeAgg, awayAgg) {
     const awayValue = document.createElement("div");
     awayValue.className = "form-away";
     awayValue.textContent = row.format === "int"
-      ? formatIntegerOrNA(row.away)
+      ? formatInteger(row.away)
       : formatNumber(row.away);
     rowEl.appendChild(awayValue);
 
-    rowsWrapper.appendChild(rowEl);
+    grid.appendChild(rowEl);
   });
 
-  card.appendChild(rowsWrapper);
+  card.appendChild(grid);
   return card;
 }
 
@@ -889,7 +910,7 @@ function renderTables({ homeAgg, awayAgg, leagueAgg, leagueAwayAgg, combinedAgg,
   const baseColumns = getBaseColumns();
 
   tablesEl.appendChild(
-    buildFormCard(homeAgg, awayAgg)
+    buildFormComparisonCard(homeAgg, awayAgg)
   );
 
   tablesEl.appendChild(
