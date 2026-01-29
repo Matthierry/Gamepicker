@@ -399,6 +399,7 @@ function buildTableCard(title, rows, columns, note) {
       const td = document.createElement("td");
       const value = row[col.key];
       td.textContent = col.format === "int" ? formatInteger(value) : formatNumber(value);
+      td.dataset.label = col.label;
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
@@ -509,14 +510,17 @@ function buildPredictionTable(predictions) {
     const labelCell = document.createElement("td");
     labelCell.textContent = row.label;
     labelCell.className = "metric-label";
+    labelCell.dataset.label = "Metric";
     tr.appendChild(labelCell);
 
     const homeCell = document.createElement("td");
     homeCell.textContent = formatNumber(row.home);
+    homeCell.dataset.label = "Home";
     tr.appendChild(homeCell);
 
     const awayCell = document.createElement("td");
     awayCell.textContent = formatNumber(row.away);
+    awayCell.dataset.label = "Away";
     tr.appendChild(awayCell);
     tbody.appendChild(tr);
   });
@@ -552,10 +556,12 @@ function buildPoissonTable(title, probs, probs9Plus) {
     const tr = document.createElement("tr");
     const goalsCell = document.createElement("td");
     goalsCell.textContent = String(index);
+    goalsCell.dataset.label = "Goals";
     tr.appendChild(goalsCell);
 
     const probCell = document.createElement("td");
     probCell.textContent = formatPercent(value);
+    probCell.dataset.label = "Probability";
     tr.appendChild(probCell);
     tbody.appendChild(tr);
   });
@@ -563,9 +569,11 @@ function buildPoissonTable(title, probs, probs9Plus) {
   const plusRow = document.createElement("tr");
   const plusLabel = document.createElement("td");
   plusLabel.textContent = "9+";
+  plusLabel.dataset.label = "Goals";
   plusRow.appendChild(plusLabel);
   const plusValue = document.createElement("td");
   plusValue.textContent = formatPercent(probs9Plus);
+  plusValue.dataset.label = "Probability";
   plusRow.appendChild(plusValue);
   tbody.appendChild(plusRow);
 
@@ -585,6 +593,9 @@ function buildCorrectScoreTable(predictions) {
   const wrapper = document.createElement("div");
   wrapper.className = "table-wrapper matrix-wrapper";
   const table = document.createElement("table");
+  const columnLabels = Array.from({ length: 10 }, (_, index) => String(index)).concat("9+");
+  const gridValues = predictions.correctScoreGrid.grid.flat().filter((value) => value > 0);
+  const maxValue = gridValues.length ? Math.max(...gridValues) : 0;
 
   const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
@@ -603,15 +614,27 @@ function buildCorrectScoreTable(predictions) {
   table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
+  const heatCells = [];
   predictions.correctScoreGrid.grid.forEach((row, rowIndex) => {
     const tr = document.createElement("tr");
     const rowLabel = document.createElement("td");
     rowLabel.textContent = rowIndex === 10 ? "9+" : String(rowIndex);
     rowLabel.className = "metric-label";
+    rowLabel.dataset.label = "Home Goals";
     tr.appendChild(rowLabel);
-    row.forEach((value) => {
+    row.forEach((value, colIndex) => {
       const td = document.createElement("td");
-      td.textContent = formatPercent(value);
+      const span = document.createElement("span");
+      span.textContent = formatPercent(value);
+      td.appendChild(span);
+      td.classList.add("heat-cell");
+      const intensity = maxValue ? value / maxValue : 0;
+      td.style.setProperty("--heat", intensity.toFixed(4));
+      if (intensity > 0.65) {
+        td.classList.add("heat-darktext");
+      }
+      td.dataset.label = `Away ${columnLabels[colIndex]}`;
+      heatCells.push({ value, td });
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
@@ -619,6 +642,20 @@ function buildCorrectScoreTable(predictions) {
   table.appendChild(tbody);
   wrapper.appendChild(table);
   card.appendChild(wrapper);
+
+  heatCells
+    .filter((cell) => cell.value > 0)
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 3)
+    .forEach((cell, index) => {
+      const rank = index + 1;
+      cell.td.classList.add("top-score");
+      cell.td.dataset.rank = String(rank);
+      const badge = document.createElement("span");
+      badge.className = "rank-badge";
+      badge.textContent = `#${rank}`;
+      cell.td.appendChild(badge);
+    });
 
   const summary = document.createElement("div");
   summary.className = "summary";
