@@ -453,6 +453,44 @@ button:disabled {
   --pattern-angle: 135deg;
 }
 
+.correct-score-card {
+  display: none;
+}
+
+.summary-card {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.summary-card-section h3 {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.summary-card-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1rem;
+  align-items: center;
+}
+
+.summary-card-label {
+  font-weight: 600;
+  color: var(--text);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.summary-card-value {
+  font-weight: 700;
+  color: var(--accent-2);
+  text-align: right;
+  white-space: nowrap;
+}
+
 @media (max-width: 640px) {
   :root {
     font-size: 15px;
@@ -563,5 +601,14 @@ button:disabled {
 
   .form-title {
     padding: 0 0.25rem;
+  }
+
+  .summary-card-grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.4rem 0.75rem;
+  }
+
+  .summary-card-value {
+    white-space: normal;
   }
 }
