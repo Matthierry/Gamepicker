@@ -711,7 +711,7 @@ function buildGoalProbabilitiesCard(predictions) {
 
 function buildCorrectScoreTable(predictions) {
   const card = document.createElement("div");
-  card.className = "table-card";
+  card.className = "table-card correct-score-card";
   const heading = document.createElement("h2");
   heading.textContent = "Correct Score Matrix";
   card.appendChild(heading);
@@ -834,6 +834,38 @@ function buildCorrectScoreTable(predictions) {
   return card;
 }
 
+function computeSummaryMarkets(grid) {
+  const maxIndex = grid.length - 1;
+  const goalValue = (index) => (index === maxIndex ? 10 : index);
+  const totals = {
+    over15: 0,
+    under15: 0,
+    over25: 0,
+    under25: 0,
+    over35: 0,
+    under35: 0,
+    bttsYes: 0
+  };
+
+  grid.forEach((row, homeIndex) => {
+    row.forEach((value, awayIndex) => {
+      const totalGoals = goalValue(homeIndex) + goalValue(awayIndex);
+      if (totalGoals > 1.5) totals.over15 += value;
+      else totals.under15 += value;
+      if (totalGoals > 2.5) totals.over25 += value;
+      else totals.under25 += value;
+      if (totalGoals > 3.5) totals.over35 += value;
+      else totals.under35 += value;
+      if (goalValue(homeIndex) >= 1 && goalValue(awayIndex) >= 1) {
+        totals.bttsYes += value;
+      }
+    });
+  });
+
+  totals.bttsNo = Math.max(0, 1 - totals.bttsYes);
+  return totals;
+}
+
 function computePredictions(homeAgg, awayAgg, leagueAgg) {
   const avg = (source, key) => (isValidNumber(source.averages[key]) ? source.averages[key] : 0);
 
@@ -915,6 +947,7 @@ function computePredictions(homeAgg, awayAgg, leagueAgg) {
     homePoisson.probs9Plus,
     awayPoisson.probs9Plus
   );
+  const summaryMarkets = computeSummaryMarkets(correctScoreGrid.grid);
 
   return {
     HomeAttackScore,
@@ -947,8 +980,77 @@ function computePredictions(homeAgg, awayAgg, leagueAgg) {
     AGoalsFormDevi,
     homePoisson,
     awayPoisson,
-    correctScoreGrid
+    correctScoreGrid,
+    ...summaryMarkets
   };
+}
+
+function buildSummaryCard(predictions) {
+  const card = document.createElement("div");
+  card.className = "table-card summary-card";
+
+  const heading = document.createElement("h2");
+  heading.textContent = "Summary";
+  card.appendChild(heading);
+
+  const sections = [
+    {
+      title: "Outcome",
+      rows: [
+        { label: "Home Win", value: predictions.correctScoreGrid.homeWin },
+        { label: "Draw", value: predictions.correctScoreGrid.draw },
+        { label: "Away Win", value: predictions.correctScoreGrid.awayWin }
+      ]
+    },
+    {
+      title: "Total Goals",
+      rows: [
+        { label: "Over 1.5", value: predictions.over15 },
+        { label: "Under 1.5", value: predictions.under15 },
+        { label: "Over 2.5", value: predictions.over25 },
+        { label: "Under 2.5", value: predictions.under25 },
+        { label: "Over 3.5", value: predictions.over35 },
+        { label: "Under 3.5", value: predictions.under35 }
+      ]
+    },
+    {
+      title: "BTTS",
+      rows: [
+        { label: "Yes", value: predictions.bttsYes },
+        { label: "No", value: predictions.bttsNo }
+      ]
+    }
+  ];
+
+  sections.forEach((sectionData) => {
+    const section = document.createElement("div");
+    section.className = "summary-card-section";
+
+    const title = document.createElement("h3");
+    title.textContent = sectionData.title;
+    section.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "summary-card-grid";
+
+    sectionData.rows.forEach((row) => {
+      const label = document.createElement("div");
+      label.className = "summary-card-label";
+      label.textContent = row.label;
+
+      const value = document.createElement("div");
+      value.className = "summary-card-value";
+      value.textContent = formatPercent(row.value);
+
+      grid.appendChild(label);
+      grid.appendChild(value);
+    });
+
+    section.appendChild(grid);
+    card.appendChild(section);
+  });
+
+  return card;
 }
 
 function renderPredictions(predictions) {
@@ -962,6 +1064,7 @@ function renderPredictions(predictions) {
 
   const cards = document.createElement("div");
   cards.className = "tables";
+  cards.appendChild(buildSummaryCard(predictions));
   cards.appendChild(buildPredictionTable(predictions));
   cards.appendChild(buildGoalProbabilitiesCard(predictions));
   cards.appendChild(buildCorrectScoreTable(predictions));
@@ -972,6 +1075,9 @@ function renderPredictions(predictions) {
 function renderTables({ homeAgg, awayAgg, leagueAgg }) {
   clearTables();
 
+  const predictions = computePredictions(homeAgg, awayAgg, leagueAgg);
+  tablesEl.appendChild(renderPredictions(predictions));
+
   tablesEl.appendChild(
     buildFormComparisonCard(homeAgg, awayAgg)
   );
@@ -979,9 +1085,6 @@ function renderTables({ homeAgg, awayAgg, leagueAgg }) {
   tablesEl.appendChild(
     buildLeagueAveragesCard(leagueAgg)
   );
-
-  const predictions = computePredictions(homeAgg, awayAgg, leagueAgg);
-  tablesEl.appendChild(renderPredictions(predictions));
 }
 
 async function loadLeagueMatches(leagueCode) {
