@@ -179,6 +179,8 @@ button:disabled {
   margin: 0.35rem 0 1rem;
   color: var(--muted);
   font-size: 0.9rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .form-grid {
@@ -213,12 +215,14 @@ button:disabled {
   text-align: right;
   justify-self: end;
   font-weight: 600;
+  min-width: 0;
 }
 
 .form-away {
   text-align: left;
   justify-self: start;
   font-weight: 600;
+  min-width: 0;
 }
 
 .form-title {
@@ -227,6 +231,7 @@ button:disabled {
   color: var(--text);
   line-height: 1.2;
   word-break: break-word;
+  min-width: 0;
 }
 
 .predictions .section-title {

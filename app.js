@@ -474,17 +474,17 @@ function buildFormComparisonCard(homeAgg, awayAgg) {
 
   const headerHome = document.createElement("div");
   headerHome.className = "form-home";
-  headerHome.textContent = "Home";
+  headerHome.textContent = "HOME";
   headerRow.appendChild(headerHome);
 
   const headerTitle = document.createElement("div");
   headerTitle.className = "form-title";
-  headerTitle.textContent = "Stat";
+  headerTitle.textContent = "STAT";
   headerRow.appendChild(headerTitle);
 
   const headerAway = document.createElement("div");
   headerAway.className = "form-away";
-  headerAway.textContent = "Away";
+  headerAway.textContent = "AWAY";
   headerRow.appendChild(headerAway);
 
   grid.appendChild(headerRow);
