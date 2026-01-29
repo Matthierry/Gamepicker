@@ -301,7 +301,7 @@ button:disabled {
     white-space: normal;
   }
 
-  .table-wrapper {
+  .table-wrapper:not(.matrix-wrapper) {
     overflow-x: visible;
   }
 
@@ -309,18 +309,22 @@ button:disabled {
     overflow-x: auto;
   }
 
-  .table-card table thead {
+  .table-card table:not(.matrix-table) thead {
     display: none;
   }
 
-  .table-card table,
-  .table-card tbody,
-  .table-card tr {
+  .table-card table:not(.matrix-table),
+  .table-card table:not(.matrix-table) tbody,
+  .table-card table:not(.matrix-table) tr {
     display: block;
     width: 100%;
   }
 
-  .table-card tbody tr {
+  .table-card table:not(.matrix-table) {
+    font-size: 0.85rem;
+  }
+
+  .table-card table:not(.matrix-table) tbody tr {
     background: var(--panel-2);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -328,7 +332,7 @@ button:disabled {
     margin-bottom: 0.75rem;
   }
 
-  .table-card td {
+  .table-card table:not(.matrix-table) td {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -340,11 +344,11 @@ button:disabled {
     overflow-wrap: anywhere;
   }
 
-  .table-card td:last-child {
+  .table-card table:not(.matrix-table) td:last-child {
     border-bottom: none;
   }
 
-  .table-card td::before {
+  .table-card table:not(.matrix-table) td::before {
     content: attr(data-label);
     color: var(--muted);
     font-weight: 600;

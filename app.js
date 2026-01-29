@@ -604,6 +604,7 @@ function buildCorrectScoreTable(predictions) {
   const wrapper = document.createElement("div");
   wrapper.className = "table-wrapper matrix-wrapper";
   const table = document.createElement("table");
+  table.classList.add("matrix-table");
   const columnLabels = Array.from({ length: 10 }, (_, index) => String(index)).concat("9+");
   const gridValues = predictions.correctScoreGrid.grid.flat().filter((value) => value > 0);
   const maxValue = gridValues.length ? Math.max(...gridValues) : 0;

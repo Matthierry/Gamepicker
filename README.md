@@ -14,6 +14,14 @@ A zero-cost static site that surfaces upcoming English league fixtures and gener
    ```
 3. Open `http://localhost:8000` in your browser.
 
+## UI smoke test
+
+Run the Playwright-based mobile smoke test (requires Playwright browsers installed):
+
+```bash
+node scripts/ui-smoke.mjs
+```
+
 ## Data pipeline
 
 - `scripts/build-data.mjs` downloads the fixtures CSV plus current and previous season CSVs for leagues E0-E3.
