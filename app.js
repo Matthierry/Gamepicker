@@ -46,6 +46,17 @@ function formatPercent(value) {
   return `${percentFormatter.format(value * 100)}%`;
 }
 
+function formatDateDMY(dateISO) {
+  if (!dateISO) {
+    return "";
+  }
+  const [year, month, day] = dateISO.split("-");
+  if (!year || !month || !day) {
+    return dateISO;
+  }
+  return `${day}/${month}/${year}`;
+}
+
 function safeDiv(numerator, denominator) {
   const safeNumerator = isValidNumber(numerator) ? numerator : 0;
   const safeDenominator = isValidNumber(denominator) ? denominator : 0;
@@ -194,7 +205,7 @@ function populateFixtureOptions(fixtures, selectedId) {
     return;
   }
   fixtures.forEach((fixture) => {
-    const label = `${fixture.dateISO} • ${fixture.homeTeam} vs ${fixture.awayTeam}`;
+    const label = `${fixture.homeTeam} vs ${fixture.awayTeam} - ${formatDateDMY(fixture.dateISO)}`;
     fixtureSelect.appendChild(createOption(fixture.id, label));
   });
   fixtureSelect.disabled = false;
