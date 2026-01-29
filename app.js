@@ -39,6 +39,13 @@ function formatInteger(value) {
   return String(Math.round(value));
 }
 
+function formatIntegerOrNA(value) {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return "N/A";
+  }
+  return String(Math.round(value));
+}
+
 function formatPercent(value) {
   if (value === null || value === undefined || Number.isNaN(value)) {
     return "N/A";
@@ -428,6 +435,66 @@ function buildTableCard(title, rows, columns, note) {
     card.appendChild(noteEl);
   }
 
+  return card;
+}
+
+function buildFormCard(homeAgg, awayAgg) {
+  const card = document.createElement("div");
+  card.className = "table-card";
+
+  const heading = document.createElement("h2");
+  heading.textContent = "FORM";
+  card.appendChild(heading);
+
+  const subtitle = document.createElement("p");
+  subtitle.className = "form-subtitle";
+  subtitle.textContent = "Form reflects each team in their relevant home/away context only (e.g. home form excludes their away matches).";
+  card.appendChild(subtitle);
+
+  const rows = [
+    { title: "Goals For", home: homeAgg.averages.FTHG, away: awayAgg.averages.FTAG, format: "number" },
+    { title: "Shots For", home: homeAgg.averages.HS, away: awayAgg.averages.AS, format: "number" },
+    { title: "Shots On Target For", home: homeAgg.averages.HST, away: awayAgg.averages.AST, format: "number" },
+    { title: "Goals Against", home: homeAgg.averages.FTAG, away: awayAgg.averages.FTHG, format: "number" },
+    { title: "Shots Against", home: homeAgg.averages.AS, away: awayAgg.averages.HS, format: "number" },
+    { title: "Shots On Target Against", home: homeAgg.averages.AST, away: awayAgg.averages.HST, format: "number" },
+    { title: "Games Played", home: homeAgg.totals.gamesPlayed, away: awayAgg.totals.gamesPlayed, format: "int" },
+    { title: "Games Won", home: homeAgg.totals.homeWin, away: awayAgg.totals.awayWin, format: "int" },
+    { title: "Games Drawn", home: homeAgg.totals.draw, away: awayAgg.totals.draw, format: "int" },
+    { title: "Games Lost", home: homeAgg.totals.awayWin, away: awayAgg.totals.homeWin, format: "int" },
+    { title: "Games Over 2.5", home: homeAgg.totals.over25, away: awayAgg.totals.over25, format: "int" },
+    { title: "Games Under 2.5", home: homeAgg.totals.under25, away: awayAgg.totals.under25, format: "int" }
+  ];
+
+  const rowsWrapper = document.createElement("div");
+  rowsWrapper.className = "form-rows";
+  rows.forEach((row) => {
+    const rowEl = document.createElement("div");
+    rowEl.className = "form-row";
+
+    const homeValue = document.createElement("div");
+    homeValue.className = "form-home";
+    homeValue.textContent = row.format === "int"
+      ? formatIntegerOrNA(row.home)
+      : formatNumber(row.home);
+    rowEl.appendChild(homeValue);
+
+    const title = document.createElement("div");
+    title.className = "form-title";
+    title.textContent = row.title;
+    rowEl.appendChild(title);
+
+    const awayValue = document.createElement("div");
+    awayValue.className = "form-away";
+    awayValue.textContent = row.format === "int"
+      ? formatIntegerOrNA(row.away)
+      : formatNumber(row.away);
+    rowEl.appendChild(awayValue);
+
+    rowsWrapper.appendChild(rowEl);
+  });
+
+  card.appendChild(rowsWrapper);
   return card;
 }
 
@@ -822,11 +889,7 @@ function renderTables({ homeAgg, awayAgg, leagueAgg, leagueAwayAgg, combinedAgg,
   const baseColumns = getBaseColumns();
 
   tablesEl.appendChild(
-    buildTableCard("Home Team Form", buildRowsFromAggregates(homeAgg), baseColumns)
-  );
-
-  tablesEl.appendChild(
-    buildTableCard("Away Team Form", buildRowsFromAggregates(awayAgg), baseColumns)
+    buildFormCard(homeAgg, awayAgg)
   );
 
   tablesEl.appendChild(
