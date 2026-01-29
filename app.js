@@ -438,19 +438,82 @@ function buildTableCard(title, rows, columns, note) {
   return card;
 }
 
-function buildFormComparisonCard(homeAgg, awayAgg) {
+function formatRowValue(row, key) {
+  const value = row[key];
+  if (row.format === "int") {
+    return formatInteger(value);
+  }
+  if (row.format === "percent") {
+    return formatPercent(value);
+  }
+  return formatNumber(value);
+}
+
+function buildFormGridCard({ title, subtitle, rows, headerLabels = { home: "HOME", stat: "STAT", away: "AWAY" } }) {
   const card = document.createElement("div");
   card.className = "table-card";
 
   const heading = document.createElement("h2");
-  heading.textContent = "FORM";
+  heading.textContent = title;
   card.appendChild(heading);
 
-  const subtitle = document.createElement("p");
-  subtitle.className = "form-subtitle";
-  subtitle.textContent = "Form reflects each team in their relevant home/away context only (e.g. home form excludes their away matches).";
-  card.appendChild(subtitle);
+  if (subtitle) {
+    const subtitleEl = document.createElement("p");
+    subtitleEl.className = "form-subtitle";
+    subtitleEl.textContent = subtitle;
+    card.appendChild(subtitleEl);
+  }
 
+  const grid = document.createElement("div");
+  grid.className = "form-grid";
+
+  const headerRow = document.createElement("div");
+  headerRow.className = "form-row form-header";
+
+  const headerHome = document.createElement("div");
+  headerHome.className = "form-home";
+  headerHome.textContent = headerLabels.home;
+  headerRow.appendChild(headerHome);
+
+  const headerTitle = document.createElement("div");
+  headerTitle.className = "form-title";
+  headerTitle.textContent = headerLabels.stat;
+  headerRow.appendChild(headerTitle);
+
+  const headerAway = document.createElement("div");
+  headerAway.className = "form-away";
+  headerAway.textContent = headerLabels.away;
+  headerRow.appendChild(headerAway);
+
+  grid.appendChild(headerRow);
+
+  rows.forEach((row) => {
+    const rowEl = document.createElement("div");
+    rowEl.className = "form-row";
+
+    const homeValue = document.createElement("div");
+    homeValue.className = "form-home";
+    homeValue.textContent = formatRowValue(row, "home");
+    rowEl.appendChild(homeValue);
+
+    const title = document.createElement("div");
+    title.className = "form-title";
+    title.textContent = row.title;
+    rowEl.appendChild(title);
+
+    const awayValue = document.createElement("div");
+    awayValue.className = "form-away";
+    awayValue.textContent = formatRowValue(row, "away");
+    rowEl.appendChild(awayValue);
+
+    grid.appendChild(rowEl);
+  });
+
+  card.appendChild(grid);
+  return card;
+}
+
+function buildFormComparisonCard(homeAgg, awayAgg) {
   const rows = [
     { title: "Goals For", home: homeAgg.averages.FTHG, away: awayAgg.averages.FTAG, format: "number" },
     { title: "Shots For", home: homeAgg.averages.HS, away: awayAgg.averages.AS, format: "number" },
@@ -466,57 +529,33 @@ function buildFormComparisonCard(homeAgg, awayAgg) {
     { title: "Games Under 2.5", home: homeAgg.totals.under25, away: awayAgg.totals.under25, format: "int" }
   ];
 
-  const grid = document.createElement("div");
-  grid.className = "form-grid";
-
-  const headerRow = document.createElement("div");
-  headerRow.className = "form-row form-header";
-
-  const headerHome = document.createElement("div");
-  headerHome.className = "form-home";
-  headerHome.textContent = "HOME";
-  headerRow.appendChild(headerHome);
-
-  const headerTitle = document.createElement("div");
-  headerTitle.className = "form-title";
-  headerTitle.textContent = "STAT";
-  headerRow.appendChild(headerTitle);
-
-  const headerAway = document.createElement("div");
-  headerAway.className = "form-away";
-  headerAway.textContent = "AWAY";
-  headerRow.appendChild(headerAway);
-
-  grid.appendChild(headerRow);
-
-  rows.forEach((row) => {
-    const rowEl = document.createElement("div");
-    rowEl.className = "form-row";
-
-    const homeValue = document.createElement("div");
-    homeValue.className = "form-home";
-    homeValue.textContent = row.format === "int"
-      ? formatInteger(row.home)
-      : formatNumber(row.home);
-    rowEl.appendChild(homeValue);
-
-    const title = document.createElement("div");
-    title.className = "form-title";
-    title.textContent = row.title;
-    rowEl.appendChild(title);
-
-    const awayValue = document.createElement("div");
-    awayValue.className = "form-away";
-    awayValue.textContent = row.format === "int"
-      ? formatInteger(row.away)
-      : formatNumber(row.away);
-    rowEl.appendChild(awayValue);
-
-    grid.appendChild(rowEl);
+  return buildFormGridCard({
+    title: "FORM",
+    subtitle: "Form reflects each team in their relevant home/away context only (e.g. home form excludes their away matches).",
+    rows
   });
+}
 
-  card.appendChild(grid);
-  return card;
+function buildLeagueAveragesCard(leagueAgg) {
+  const rows = [
+    { title: "Goals For", home: leagueAgg.averages.FTHG, away: leagueAgg.averages.FTAG, format: "number" },
+    { title: "Shots For", home: leagueAgg.averages.HS, away: leagueAgg.averages.AS, format: "number" },
+    { title: "Shots On Target For", home: leagueAgg.averages.HST, away: leagueAgg.averages.AST, format: "number" },
+    { title: "Goals Against", home: leagueAgg.averages.FTAG, away: leagueAgg.averages.FTHG, format: "number" },
+    { title: "Shots Against", home: leagueAgg.averages.AS, away: leagueAgg.averages.HS, format: "number" },
+    { title: "Shots On Target Against", home: leagueAgg.averages.AST, away: leagueAgg.averages.HST, format: "number" },
+    { title: "Games Played", home: leagueAgg.totals.gamesPlayed, away: leagueAgg.totals.gamesPlayed, format: "int" },
+    { title: "Games Won", home: leagueAgg.totals.homeWin, away: leagueAgg.totals.awayWin, format: "int" },
+    { title: "Games Drawn", home: leagueAgg.totals.draw, away: leagueAgg.totals.draw, format: "int" },
+    { title: "Games Lost", home: leagueAgg.totals.awayWin, away: leagueAgg.totals.homeWin, format: "int" },
+    { title: "Games Over 2.5", home: leagueAgg.totals.over25, away: leagueAgg.totals.over25, format: "int" },
+    { title: "Games Under 2.5", home: leagueAgg.totals.under25, away: leagueAgg.totals.under25, format: "int" }
+  ];
+
+  return buildFormGridCard({
+    title: "LEAGUE AVERAGES",
+    rows
+  });
 }
 
 function buildRowsFromAggregates(aggregates) {
@@ -583,51 +622,17 @@ function buildPredictionRows(predictions) {
 }
 
 function buildPredictionTable(predictions) {
-  const card = document.createElement("div");
-  card.className = "table-card";
-  const heading = document.createElement("h2");
-  heading.textContent = "Scores & Expected Outputs";
-  card.appendChild(heading);
+  const rows = buildPredictionRows(predictions).map((row) => ({
+    title: row.label,
+    home: row.home,
+    away: row.away,
+    format: "number"
+  }));
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "table-wrapper";
-
-  const table = document.createElement("table");
-  const thead = document.createElement("thead");
-  const headerRow = document.createElement("tr");
-  ["Metric", "Home", "Away"].forEach((label) => {
-    const th = document.createElement("th");
-    th.textContent = label;
-    headerRow.appendChild(th);
+  return buildFormGridCard({
+    title: "Scores & Expected Outputs",
+    rows
   });
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
-
-  const tbody = document.createElement("tbody");
-  buildPredictionRows(predictions).forEach((row) => {
-    const tr = document.createElement("tr");
-    const labelCell = document.createElement("td");
-    labelCell.textContent = row.label;
-    labelCell.className = "metric-label";
-    labelCell.dataset.label = "Metric";
-    tr.appendChild(labelCell);
-
-    const homeCell = document.createElement("td");
-    homeCell.textContent = formatNumber(row.home);
-    homeCell.dataset.label = "Home";
-    tr.appendChild(homeCell);
-
-    const awayCell = document.createElement("td");
-    awayCell.textContent = formatNumber(row.away);
-    awayCell.dataset.label = "Away";
-    tr.appendChild(awayCell);
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-
-  wrapper.appendChild(table);
-  card.appendChild(wrapper);
-  return card;
 }
 
 function buildPoissonTable(title, probs, probs9Plus) {
@@ -680,6 +685,28 @@ function buildPoissonTable(title, probs, probs9Plus) {
   wrapper.appendChild(table);
   card.appendChild(wrapper);
   return card;
+}
+
+function buildGoalProbabilitiesCard(predictions) {
+  const rows = predictions.homePoisson.probs.map((value, index) => ({
+    title: String(index),
+    home: value,
+    away: predictions.awayPoisson.probs[index],
+    format: "percent"
+  }));
+
+  rows.push({
+    title: "9+",
+    home: predictions.homePoisson.probs9Plus,
+    away: predictions.awayPoisson.probs9Plus,
+    format: "percent"
+  });
+
+  return buildFormGridCard({
+    title: "Goal Probabilities",
+    rows,
+    headerLabels: { home: "HOME", stat: "GOALS", away: "AWAY" }
+  });
 }
 
 function buildCorrectScoreTable(predictions) {
@@ -758,13 +785,51 @@ function buildCorrectScoreTable(predictions) {
     });
 
   const summary = document.createElement("div");
-  summary.className = "summary";
-  summary.innerHTML = `
-    <strong>Summary</strong>
-    <div>Home Win: ${formatPercent(predictions.correctScoreGrid.homeWin)}</div>
-    <div>Draw: ${formatPercent(predictions.correctScoreGrid.draw)}</div>
-    <div>Away Win: ${formatPercent(predictions.correctScoreGrid.awayWin)}</div>
-  `;
+  summary.className = "summary summary-outcomes";
+
+  const summaryHeader = document.createElement("div");
+  summaryHeader.className = "summary-header";
+  summaryHeader.innerHTML = "<strong>Outcome Summary</strong><span>Win/Draw probabilities</span>";
+  summary.appendChild(summaryHeader);
+
+  const summaryGrid = document.createElement("div");
+  summaryGrid.className = "summary-grid";
+
+  const outcomeItems = [
+    { label: "Home Win", value: predictions.correctScoreGrid.homeWin, icon: "▲", className: "summary-home" },
+    { label: "Draw", value: predictions.correctScoreGrid.draw, icon: "●", className: "summary-draw" },
+    { label: "Away Win", value: predictions.correctScoreGrid.awayWin, icon: "▼", className: "summary-away" }
+  ];
+
+  outcomeItems.forEach((item) => {
+    const cardEl = document.createElement("div");
+    cardEl.className = `summary-item ${item.className}`;
+
+    const title = document.createElement("div");
+    title.className = "summary-title";
+    const icon = document.createElement("span");
+    icon.className = "summary-icon";
+    icon.textContent = item.icon;
+    title.appendChild(icon);
+    const label = document.createElement("span");
+    label.textContent = item.label;
+    title.appendChild(label);
+    cardEl.appendChild(title);
+
+    const value = document.createElement("div");
+    value.className = "summary-value";
+    value.textContent = formatPercent(item.value);
+    cardEl.appendChild(value);
+
+    const bar = document.createElement("div");
+    bar.className = "summary-bar";
+    bar.style.setProperty("--value", (item.value * 100).toFixed(1));
+    cardEl.appendChild(bar);
+
+    summaryGrid.appendChild(cardEl);
+  });
+
+  summary.appendChild(summaryGrid);
   card.appendChild(summary);
   return card;
 }
@@ -898,49 +963,21 @@ function renderPredictions(predictions) {
   const cards = document.createElement("div");
   cards.className = "tables";
   cards.appendChild(buildPredictionTable(predictions));
-  cards.appendChild(buildPoissonTable("Home Goal Probabilities", predictions.homePoisson.probs, predictions.homePoisson.probs9Plus));
-  cards.appendChild(buildPoissonTable("Away Goal Probabilities", predictions.awayPoisson.probs, predictions.awayPoisson.probs9Plus));
+  cards.appendChild(buildGoalProbabilitiesCard(predictions));
   cards.appendChild(buildCorrectScoreTable(predictions));
   section.appendChild(cards);
   return section;
 }
 
-function renderTables({ homeAgg, awayAgg, leagueAgg, leagueAwayAgg, combinedAgg, combinedExtras }) {
+function renderTables({ homeAgg, awayAgg, leagueAgg }) {
   clearTables();
-  const baseColumns = getBaseColumns();
 
   tablesEl.appendChild(
     buildFormComparisonCard(homeAgg, awayAgg)
   );
 
   tablesEl.appendChild(
-    buildTableCard("League Home Average", buildRowsFromAggregates(leagueAgg), baseColumns)
-  );
-
-  tablesEl.appendChild(
-    buildTableCard("League Away Average", buildRowsFromAggregates(leagueAwayAgg), baseColumns)
-  );
-
-  const combinedColumns = [
-    ...baseColumns,
-    { key: "combinedGoals", label: "Overall Goals/Team" },
-    { key: "combinedShots", label: "Overall Shots/Team" },
-    { key: "combinedSot", label: "Overall SOT/Team" }
-  ];
-  const combinedRows = buildRowsFromAggregates(combinedAgg).map((row) => ({
-    ...row,
-    combinedGoals: combinedExtras.combinedGoals,
-    combinedShots: combinedExtras.combinedShots,
-    combinedSot: combinedExtras.combinedSot
-  }));
-
-  tablesEl.appendChild(
-    buildTableCard(
-      "League Combined Average",
-      combinedRows,
-      combinedColumns,
-      "Overall metrics flatten home/away values per team."
-    )
+    buildLeagueAveragesCard(leagueAgg)
   );
 
   const predictions = computePredictions(homeAgg, awayAgg, leagueAgg);
@@ -977,10 +1014,6 @@ async function generateBreakdown() {
   const homeAgg = computeAggregates(matchesInWindow, { homeTeam: selectedFixture.homeTeam });
   const awayAgg = computeAggregates(matchesInWindow, { awayTeam: selectedFixture.awayTeam });
   const leagueAgg = computeAggregates(matchesInWindow);
-  const leagueAwayAgg = computeLeagueAwayAverages(leagueAgg);
-  const combinedAggWithExtras = computeCombinedAverages(matchesInWindow, leagueAgg);
-  const combinedAgg = combinedAggWithExtras;
-  const combinedExtras = combinedAggWithExtras.combined;
 
   if (matchesInWindow.length === 0) {
     setStatus("No matches found in this lookback window. Showing empty tables.");
@@ -991,10 +1024,7 @@ async function generateBreakdown() {
   renderTables({
     homeAgg,
     awayAgg,
-    leagueAgg,
-    leagueAwayAgg,
-    combinedAgg,
-    combinedExtras
+    leagueAgg
   });
 }
 
