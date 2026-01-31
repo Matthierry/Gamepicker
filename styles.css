@@ -459,36 +459,70 @@ button:disabled {
 
 .summary-card {
   display: grid;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
-.summary-card-section h3 {
-  margin: 0 0 0.75rem;
-  font-size: 0.95rem;
-  text-transform: uppercase;
+.summary-groups {
+  display: grid;
+  gap: 1rem;
+}
+
+.summary-group-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 
-.summary-card-grid {
+.summary-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.9rem 0;
+}
+
+.summary-tiles {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.5rem 1rem;
-  align-items: center;
+  gap: 0.6rem;
 }
 
-.summary-card-label {
+.summary-outcome-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.summary-btts-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.summary-goals-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.summary-tile {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-2);
+  border-radius: 12px;
+  padding: 0.75rem 0.8rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+  min-width: 0;
+}
+
+.summary-label {
+  color: var(--muted);
   font-weight: 600;
-  color: var(--text);
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  font-size: 0.8rem;
 }
 
-.summary-card-value {
-  font-weight: 700;
-  color: var(--accent-2);
-  text-align: right;
-  white-space: nowrap;
+.summary-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-top: 0.25rem;
+  line-height: 1.1;
+  word-break: break-word;
 }
 
 @media (max-width: 640px) {
@@ -603,12 +637,19 @@ button:disabled {
     padding: 0 0.25rem;
   }
 
-  .summary-card-grid {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 0.4rem 0.75rem;
+  .summary-outcome-grid {
+    grid-template-columns: 1fr;
   }
 
-  .summary-card-value {
-    white-space: normal;
+  .summary-btts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-goals-row {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-value {
+    font-size: 1.05rem;
   }
 }
