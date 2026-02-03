@@ -4302,6 +4302,24 @@
     "AvgUnder25": 2.26
   },
   {
+    "dateISO": "2026-02-02",
+    "Div": "E0",
+    "HomeTeam": "Sunderland",
+    "AwayTeam": "Burnley",
+    "FTHG": 3,
+    "FTAG": 0,
+    "HS": 14,
+    "HST": 5,
+    "AS": 5,
+    "AST": 0,
+    "FTR": "H",
+    "AvgH": 1.8,
+    "AvgD": 3.42,
+    "AvgA": 4.73,
+    "AvgOver25": 2.21,
+    "AvgUnder25": 1.63
+  },
+  {
     "dateISO": "2024-08-16",
     "Div": "E0",
     "HomeTeam": "Man United",
