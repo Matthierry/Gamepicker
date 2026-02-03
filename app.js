@@ -783,54 +783,6 @@ function buildCorrectScoreTable(predictions) {
       badge.textContent = `#${rank}`;
       cell.td.appendChild(badge);
     });
-
-  const summary = document.createElement("div");
-  summary.className = "summary summary-outcomes";
-
-  const summaryHeader = document.createElement("div");
-  summaryHeader.className = "summary-header";
-  summaryHeader.innerHTML = "<strong>Outcome Summary</strong><span>Win/Draw probabilities</span>";
-  summary.appendChild(summaryHeader);
-
-  const summaryGrid = document.createElement("div");
-  summaryGrid.className = "summary-grid";
-
-  const outcomeItems = [
-    { label: "Home Win", value: predictions.correctScoreGrid.homeWin, icon: "▲", className: "summary-home" },
-    { label: "Draw", value: predictions.correctScoreGrid.draw, icon: "●", className: "summary-draw" },
-    { label: "Away Win", value: predictions.correctScoreGrid.awayWin, icon: "▼", className: "summary-away" }
-  ];
-
-  outcomeItems.forEach((item) => {
-    const cardEl = document.createElement("div");
-    cardEl.className = `summary-item ${item.className}`;
-
-    const title = document.createElement("div");
-    title.className = "summary-title";
-    const icon = document.createElement("span");
-    icon.className = "summary-icon";
-    icon.textContent = item.icon;
-    title.appendChild(icon);
-    const label = document.createElement("span");
-    label.textContent = item.label;
-    title.appendChild(label);
-    cardEl.appendChild(title);
-
-    const value = document.createElement("div");
-    value.className = "summary-value";
-    value.textContent = formatPercent(item.value);
-    cardEl.appendChild(value);
-
-    const bar = document.createElement("div");
-    bar.className = "summary-bar";
-    bar.style.setProperty("--value", (item.value * 100).toFixed(1));
-    cardEl.appendChild(bar);
-
-    summaryGrid.appendChild(cardEl);
-  });
-
-  summary.appendChild(summaryGrid);
-  card.appendChild(summary);
   return card;
 }
 
@@ -985,6 +937,46 @@ function computePredictions(homeAgg, awayAgg, leagueAgg) {
   };
 }
 
+function buildBarRow({ label, value, suffix = "", emphasis = false }) {
+  const clamped = Math.max(0, Math.min(1, Number.isFinite(value) ? value : 0));
+  const row = document.createElement("div");
+  row.className = `summary-row${emphasis ? " summary-row--emphasis" : ""}`;
+  row.setAttribute("aria-label", `${label} ${formatPercent(clamped)}${suffix}`);
+
+  const labelEl = document.createElement("div");
+  labelEl.className = "summary-row-label";
+  labelEl.textContent = label;
+
+  const barWrap = document.createElement("div");
+  barWrap.className = "summary-bar-wrap";
+  const barFill = document.createElement("div");
+  barFill.className = "summary-bar-fill";
+  barFill.style.width = `${(clamped * 100).toFixed(1)}%`;
+  barWrap.appendChild(barFill);
+
+  const valueEl = document.createElement("div");
+  valueEl.className = "summary-row-value";
+  valueEl.textContent = `${formatPercent(clamped)}${suffix}`;
+
+  row.append(labelEl, barWrap, valueEl);
+  return row;
+}
+
+function buildTotalGoalsDistribution(homePoisson, awayPoisson) {
+  const homeProbs = [...homePoisson.probs, homePoisson.probs9Plus];
+  const awayProbs = [...awayPoisson.probs, awayPoisson.probs9Plus];
+  const totalLength = homeProbs.length + awayProbs.length - 1;
+  const totals = Array.from({ length: totalLength }, () => 0);
+
+  homeProbs.forEach((homeValue, homeIndex) => {
+    awayProbs.forEach((awayValue, awayIndex) => {
+      totals[homeIndex + awayIndex] += homeValue * awayValue;
+    });
+  });
+
+  return totals;
+}
+
 function buildSummaryCard(predictions) {
   const card = document.createElement("div");
   card.className = "table-card summary-card";
@@ -996,22 +988,6 @@ function buildSummaryCard(predictions) {
   const groups = document.createElement("div");
   groups.className = "summary-groups";
 
-  const createTile = (labelText, value) => {
-    const tile = document.createElement("div");
-    tile.className = "summary-tile";
-
-    const label = document.createElement("div");
-    label.className = "summary-label";
-    label.textContent = labelText;
-
-    const valueEl = document.createElement("div");
-    valueEl.className = "summary-value";
-    valueEl.textContent = formatPercent(value);
-
-    tile.append(label, valueEl);
-    return tile;
-  };
-
   const outcomeGroup = document.createElement("div");
   outcomeGroup.className = "summary-group";
 
@@ -1020,14 +996,24 @@ function buildSummaryCard(predictions) {
   outcomeTitle.textContent = "Outcome";
   outcomeGroup.appendChild(outcomeTitle);
 
-  const outcomeGrid = document.createElement("div");
-  outcomeGrid.className = "summary-tiles summary-outcome-grid";
-  outcomeGrid.append(
-    createTile("Home Win", predictions.correctScoreGrid.homeWin),
-    createTile("Draw", predictions.correctScoreGrid.draw),
-    createTile("Away Win", predictions.correctScoreGrid.awayWin)
-  );
-  outcomeGroup.appendChild(outcomeGrid);
+  const outcomeRows = document.createElement("div");
+  outcomeRows.className = "summary-rows";
+  const outcomeValues = [
+    { label: "Home Win", value: predictions.correctScoreGrid.homeWin },
+    { label: "Draw", value: predictions.correctScoreGrid.draw },
+    { label: "Away Win", value: predictions.correctScoreGrid.awayWin }
+  ];
+  const topOutcome = Math.max(...outcomeValues.map((item) => item.value));
+  outcomeValues.forEach((item) => {
+    outcomeRows.appendChild(
+      buildBarRow({
+        label: item.label,
+        value: item.value,
+        emphasis: item.value === topOutcome
+      })
+    );
+  });
+  outcomeGroup.appendChild(outcomeRows);
 
   const totalGoalsGroup = document.createElement("div");
   totalGoalsGroup.className = "summary-group";
@@ -1037,27 +1023,29 @@ function buildSummaryCard(predictions) {
   goalsTitle.textContent = "Total Goals";
   totalGoalsGroup.appendChild(goalsTitle);
 
-  const goalRows = [
-    { threshold: "1.5", over: predictions.over15, under: predictions.under15 },
-    { threshold: "2.5", over: predictions.over25, under: predictions.under25 },
-    { threshold: "3.5", over: predictions.over35, under: predictions.under35 }
-  ];
+  const totalGoalsRows = document.createElement("div");
+  totalGoalsRows.className = "summary-rows";
+  const totals = buildTotalGoalsDistribution(predictions.homePoisson, predictions.awayPoisson);
+  const total0 = totals[0] || 0;
+  const total1 = totals[1] || 0;
+  const total2 = totals[2] || 0;
+  const total3 = totals[3] || 0;
+  const over15 = Math.max(0, 1 - (total0 + total1));
+  const under15 = Math.max(0, 1 - over15);
+  const over25 = Math.max(0, 1 - (total0 + total1 + total2));
+  const under25 = Math.max(0, 1 - over25);
+  const over35 = Math.max(0, 1 - (total0 + total1 + total2 + total3));
+  const under35 = Math.max(0, 1 - over35);
 
-  goalRows.forEach((row, index) => {
-    const goalRow = document.createElement("div");
-    goalRow.className = "summary-goals-row";
-    goalRow.append(
-      createTile(`Over ${row.threshold}`, row.over),
-      createTile(`Under ${row.threshold}`, row.under)
-    );
-    totalGoalsGroup.appendChild(goalRow);
-
-    if (index < goalRows.length - 1) {
-      const divider = document.createElement("div");
-      divider.className = "summary-divider";
-      totalGoalsGroup.appendChild(divider);
-    }
-  });
+  totalGoalsRows.append(
+    buildBarRow({ label: "Over 1.5", value: over15 }),
+    buildBarRow({ label: "Under 1.5", value: under15 }),
+    buildBarRow({ label: "Over 2.5", value: over25 }),
+    buildBarRow({ label: "Under 2.5", value: under25 }),
+    buildBarRow({ label: "Over 3.5", value: over35 }),
+    buildBarRow({ label: "Under 3.5", value: under35 })
+  );
+  totalGoalsGroup.appendChild(totalGoalsRows);
 
   const bttsGroup = document.createElement("div");
   bttsGroup.className = "summary-group";
@@ -1067,13 +1055,20 @@ function buildSummaryCard(predictions) {
   bttsTitle.textContent = "BTTS";
   bttsGroup.appendChild(bttsTitle);
 
-  const bttsGrid = document.createElement("div");
-  bttsGrid.className = "summary-tiles summary-btts-grid";
-  bttsGrid.append(
-    createTile("Yes", predictions.bttsYes),
-    createTile("No", predictions.bttsNo)
+  const bttsRows = document.createElement("div");
+  bttsRows.className = "summary-rows";
+  const grid = predictions.correctScoreGrid.grid;
+  const row0 = grid[0]?.reduce((sum, value) => sum + value, 0) || 0;
+  const col0 = grid.reduce((sum, row) => sum + (row[0] || 0), 0);
+  const cell00 = grid[0]?.[0] || 0;
+  const bttsNo = Math.max(0, row0 + col0 - cell00);
+  const bttsYes = Math.max(0, 1 - bttsNo);
+
+  bttsRows.append(
+    buildBarRow({ label: "Yes", value: bttsYes }),
+    buildBarRow({ label: "No", value: bttsNo })
   );
-  bttsGroup.appendChild(bttsGrid);
+  bttsGroup.appendChild(bttsRows);
 
   const groupDivider = () => {
     const divider = document.createElement("div");
