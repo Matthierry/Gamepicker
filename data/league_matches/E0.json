@@ -4662,6 +4662,24 @@
     "AvgUnder25": 1.96
   },
   {
+    "dateISO": "2026-02-12",
+    "Div": "E0",
+    "HomeTeam": "Brentford",
+    "AwayTeam": "Arsenal",
+    "FTHG": 1,
+    "FTAG": 1,
+    "HS": 12,
+    "HST": 3,
+    "AS": 7,
+    "AST": 2,
+    "FTR": "D",
+    "AvgH": 4.83,
+    "AvgD": 3.86,
+    "AvgA": 1.69,
+    "AvgOver25": 1.83,
+    "AvgUnder25": 1.92
+  },
+  {
     "dateISO": "2024-08-16",
     "Div": "E0",
     "HomeTeam": "Man United",
