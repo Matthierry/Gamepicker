@@ -6822,6 +6822,24 @@
     "AvgUnder25": 1.9
   },
   {
+    "dateISO": "2026-02-16",
+    "Div": "E1",
+    "HomeTeam": "Coventry",
+    "AwayTeam": "Middlesbrough",
+    "FTHG": 3,
+    "FTAG": 1,
+    "HS": 9,
+    "HST": 4,
+    "AS": 18,
+    "AST": 4,
+    "FTR": "H",
+    "AvgH": 2.22,
+    "AvgD": 3.48,
+    "AvgA": 3.01,
+    "AvgOver25": 1.69,
+    "AvgUnder25": 2.1
+  },
+  {
     "dateISO": "2024-08-09",
     "Div": "E1",
     "HomeTeam": "Blackburn",
