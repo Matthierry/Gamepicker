@@ -4680,6 +4680,24 @@
     "AvgUnder25": 1.92
   },
   {
+    "dateISO": "2026-02-18",
+    "Div": "E0",
+    "HomeTeam": "Wolves",
+    "AwayTeam": "Arsenal",
+    "FTHG": 2,
+    "FTAG": 2,
+    "HS": 5,
+    "HST": 2,
+    "AS": 10,
+    "AST": 4,
+    "FTR": "D",
+    "AvgH": 10.94,
+    "AvgD": 5.48,
+    "AvgA": 1.28,
+    "AvgOver25": 1.69,
+    "AvgUnder25": 2.11
+  },
+  {
     "dateISO": "2024-08-16",
     "Div": "E0",
     "HomeTeam": "Man United",
