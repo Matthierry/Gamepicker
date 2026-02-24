@@ -7038,6 +7038,24 @@
     "AvgUnder25": 1.9
   },
   {
+    "dateISO": "2026-02-23",
+    "Div": "E3",
+    "HomeTeam": "Walsall",
+    "AwayTeam": "Milton Keynes Dons",
+    "FTHG": 0,
+    "FTAG": 2,
+    "HS": 7,
+    "HST": 3,
+    "AS": 7,
+    "AST": 3,
+    "FTR": "A",
+    "AvgH": 2.87,
+    "AvgD": 3.14,
+    "AvgA": 2.38,
+    "AvgOver25": 2.07,
+    "AvgUnder25": 1.68
+  },
+  {
     "dateISO": "2024-08-09",
     "Div": "E3",
     "HomeTeam": "Chesterfield",

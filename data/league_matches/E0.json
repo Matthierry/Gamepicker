@@ -4860,6 +4860,24 @@
     "AvgUnder25": 1.98
   },
   {
+    "dateISO": "2026-02-23",
+    "Div": "E0",
+    "HomeTeam": "Everton",
+    "AwayTeam": "Man United",
+    "FTHG": 0,
+    "FTAG": 1,
+    "HS": 12,
+    "HST": 4,
+    "AS": 11,
+    "AST": 3,
+    "FTR": "A",
+    "AvgH": 3.57,
+    "AvgD": 3.73,
+    "AvgA": 1.94,
+    "AvgOver25": 1.68,
+    "AvgUnder25": 2.12
+  },
+  {
     "dateISO": "2024-08-16",
     "Div": "E0",
     "HomeTeam": "Man United",
