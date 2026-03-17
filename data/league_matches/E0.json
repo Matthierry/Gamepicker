@@ -5400,6 +5400,24 @@
     "AvgUnder25": 2.72
   },
   {
+    "dateISO": "2026-03-16",
+    "Div": "E0",
+    "HomeTeam": "Brentford",
+    "AwayTeam": "Wolves",
+    "FTHG": 2,
+    "FTAG": 2,
+    "HS": 10,
+    "HST": 3,
+    "AS": 13,
+    "AST": 4,
+    "FTR": "D",
+    "AvgH": 1.54,
+    "AvgD": 4.15,
+    "AvgA": 5.68,
+    "AvgOver25": 1.68,
+    "AvgUnder25": 2.11
+  },
+  {
     "dateISO": "2024-08-16",
     "Div": "E0",
     "HomeTeam": "Man United",

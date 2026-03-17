@@ -1,332 +1,191 @@
 {
-  "E0": [
-    {
-      "id": "e0-2026-03-14-burnley-bournemouth",
-      "league": "E0",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Burnley",
-      "awayTeam": "Bournemouth"
-    },
-    {
-      "id": "e0-2026-03-14-sunderland-brighton",
-      "league": "E0",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Sunderland",
-      "awayTeam": "Brighton"
-    },
-    {
-      "id": "e0-2026-03-14-arsenal-everton",
-      "league": "E0",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Arsenal",
-      "awayTeam": "Everton"
-    },
-    {
-      "id": "e0-2026-03-14-chelsea-newcastle",
-      "league": "E0",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Chelsea",
-      "awayTeam": "Newcastle"
-    },
-    {
-      "id": "e0-2026-03-14-west-ham-man-city",
-      "league": "E0",
-      "dateISO": "2026-03-14",
-      "homeTeam": "West Ham",
-      "awayTeam": "Man City"
-    },
-    {
-      "id": "e0-2026-03-15-crystal-palace-leeds",
-      "league": "E0",
-      "dateISO": "2026-03-15",
-      "homeTeam": "Crystal Palace",
-      "awayTeam": "Leeds"
-    },
-    {
-      "id": "e0-2026-03-15-man-united-aston-villa",
-      "league": "E0",
-      "dateISO": "2026-03-15",
-      "homeTeam": "Man United",
-      "awayTeam": "Aston Villa"
-    },
-    {
-      "id": "e0-2026-03-15-nott'm-forest-fulham",
-      "league": "E0",
-      "dateISO": "2026-03-15",
-      "homeTeam": "Nott'm Forest",
-      "awayTeam": "Fulham"
-    },
-    {
-      "id": "e0-2026-03-15-liverpool-tottenham",
-      "league": "E0",
-      "dateISO": "2026-03-15",
-      "homeTeam": "Liverpool",
-      "awayTeam": "Tottenham"
-    },
-    {
-      "id": "e0-2026-03-16-brentford-wolves",
-      "league": "E0",
-      "dateISO": "2026-03-16",
-      "homeTeam": "Brentford",
-      "awayTeam": "Wolves"
-    }
-  ],
+  "E0": [],
   "E1": [
     {
-      "id": "e1-2026-03-13-wrexham-swansea",
+      "id": "e1-2026-03-17-watford-wrexham",
       "league": "E1",
-      "dateISO": "2026-03-13",
-      "homeTeam": "Wrexham",
-      "awayTeam": "Swansea"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Watford",
+      "awayTeam": "Wrexham"
     },
     {
-      "id": "e1-2026-03-14-coventry-southampton",
+      "id": "e1-2026-03-18-southampton-norwich",
       "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Coventry",
-      "awayTeam": "Southampton"
-    },
-    {
-      "id": "e1-2026-03-14-middlesbrough-bristol-city",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Middlesbrough",
-      "awayTeam": "Bristol City"
-    },
-    {
-      "id": "e1-2026-03-14-oxford-charlton",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Oxford",
-      "awayTeam": "Charlton"
-    },
-    {
-      "id": "e1-2026-03-14-birmingham-sheffield-united",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Birmingham",
-      "awayTeam": "Sheffield United"
-    },
-    {
-      "id": "e1-2026-03-14-leicester-qpr",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Leicester",
-      "awayTeam": "QPR"
-    },
-    {
-      "id": "e1-2026-03-14-millwall-blackburn",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Millwall",
-      "awayTeam": "Blackburn"
-    },
-    {
-      "id": "e1-2026-03-14-norwich-preston",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Norwich",
-      "awayTeam": "Preston"
-    },
-    {
-      "id": "e1-2026-03-14-sheffield-weds-ipswich",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Sheffield Weds",
-      "awayTeam": "Ipswich"
-    },
-    {
-      "id": "e1-2026-03-14-stoke-watford",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Stoke",
-      "awayTeam": "Watford"
-    },
-    {
-      "id": "e1-2026-03-14-west-brom-hull",
-      "league": "E1",
-      "dateISO": "2026-03-14",
-      "homeTeam": "West Brom",
-      "awayTeam": "Hull"
-    },
-    {
-      "id": "e1-2026-03-16-portsmouth-derby",
-      "league": "E1",
-      "dateISO": "2026-03-16",
-      "homeTeam": "Portsmouth",
-      "awayTeam": "Derby"
+      "dateISO": "2026-03-18",
+      "homeTeam": "Southampton",
+      "awayTeam": "Norwich"
     }
   ],
   "E2": [
     {
-      "id": "e2-2026-03-14-lincoln-stockport",
+      "id": "e2-2026-03-17-afc-wimbledon-leyton-orient",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Lincoln",
-      "awayTeam": "Stockport"
+      "dateISO": "2026-03-17",
+      "homeTeam": "AFC Wimbledon",
+      "awayTeam": "Leyton Orient"
     },
     {
-      "id": "e2-2026-03-14-rotherham-bolton",
+      "id": "e2-2026-03-17-blackpool-port-vale",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Rotherham",
-      "awayTeam": "Bolton"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Blackpool",
+      "awayTeam": "Port Vale"
     },
     {
-      "id": "e2-2026-03-14-doncaster-blackpool",
+      "id": "e2-2026-03-17-bolton-doncaster",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Doncaster",
-      "awayTeam": "Blackpool"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Bolton",
+      "awayTeam": "Doncaster"
     },
     {
-      "id": "e2-2026-03-14-exeter-cardiff",
+      "id": "e2-2026-03-17-bradford-mansfield",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Exeter",
-      "awayTeam": "Cardiff"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Bradford",
+      "awayTeam": "Mansfield"
     },
     {
-      "id": "e2-2026-03-14-leyton-orient-peterboro",
+      "id": "e2-2026-03-17-burton-reading",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Leyton Orient",
-      "awayTeam": "Peterboro"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Burton",
+      "awayTeam": "Reading"
     },
     {
-      "id": "e2-2026-03-14-mansfield-barnsley",
+      "id": "e2-2026-03-17-cardiff-wycombe",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Mansfield",
-      "awayTeam": "Barnsley"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Cardiff",
+      "awayTeam": "Wycombe"
     },
     {
-      "id": "e2-2026-03-14-northampton-burton",
+      "id": "e2-2026-03-17-huddersfield-lincoln",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Northampton",
-      "awayTeam": "Burton"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Huddersfield",
+      "awayTeam": "Lincoln"
     },
     {
-      "id": "e2-2026-03-14-port-vale-huddersfield",
+      "id": "e2-2026-03-17-luton-exeter",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Port Vale",
-      "awayTeam": "Huddersfield"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Luton",
+      "awayTeam": "Exeter"
     },
     {
-      "id": "e2-2026-03-14-reading-plymouth",
+      "id": "e2-2026-03-17-peterboro-rotherham",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Reading",
-      "awayTeam": "Plymouth"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Peterboro",
+      "awayTeam": "Rotherham"
     },
     {
-      "id": "e2-2026-03-14-stevenage-afc-wimbledon",
+      "id": "e2-2026-03-17-plymouth-stevenage",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Stevenage",
-      "awayTeam": "AFC Wimbledon"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Plymouth",
+      "awayTeam": "Stevenage"
     },
     {
-      "id": "e2-2026-03-14-wigan-bradford",
+      "id": "e2-2026-03-17-stockport-northampton",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Wigan",
-      "awayTeam": "Bradford"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Stockport",
+      "awayTeam": "Northampton"
     },
     {
-      "id": "e2-2026-03-14-wycombe-luton",
+      "id": "e2-2026-03-17-barnsley-wigan",
       "league": "E2",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Wycombe",
-      "awayTeam": "Luton"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Barnsley",
+      "awayTeam": "Wigan"
     }
   ],
   "E3": [
     {
-      "id": "e3-2026-03-13-colchester-crawley-town",
+      "id": "e3-2026-03-17-newport-county-bromley",
       "league": "E3",
-      "dateISO": "2026-03-13",
-      "homeTeam": "Colchester",
-      "awayTeam": "Crawley Town"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Newport County",
+      "awayTeam": "Bromley"
     },
     {
-      "id": "e3-2026-03-14-harrogate-salford",
+      "id": "e3-2026-03-17-accrington-notts-county",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Harrogate",
-      "awayTeam": "Salford"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Accrington",
+      "awayTeam": "Notts County"
     },
     {
-      "id": "e3-2026-03-14-notts-county-chesterfield",
+      "id": "e3-2026-03-17-bristol-rvs-shrewsbury",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Notts County",
-      "awayTeam": "Chesterfield"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Bristol Rvs",
+      "awayTeam": "Shrewsbury"
     },
     {
-      "id": "e3-2026-03-14-barnet-newport-county",
+      "id": "e3-2026-03-17-cheltenham-crewe",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Barnet",
-      "awayTeam": "Newport County"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Cheltenham",
+      "awayTeam": "Crewe"
     },
     {
-      "id": "e3-2026-03-14-barrow-accrington",
+      "id": "e3-2026-03-17-chesterfield-oldham",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Barrow",
-      "awayTeam": "Accrington"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Chesterfield",
+      "awayTeam": "Oldham"
     },
     {
-      "id": "e3-2026-03-14-bromley-bristol-rvs",
+      "id": "e3-2026-03-17-crawley-town-barnet",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Bromley",
-      "awayTeam": "Bristol Rvs"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Crawley Town",
+      "awayTeam": "Barnet"
     },
     {
-      "id": "e3-2026-03-14-cambridge-gillingham",
+      "id": "e3-2026-03-17-gillingham-swindon",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Cambridge",
-      "awayTeam": "Gillingham"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Gillingham",
+      "awayTeam": "Swindon"
     },
     {
-      "id": "e3-2026-03-14-crewe-walsall",
+      "id": "e3-2026-03-17-grimsby-fleetwood-town",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Crewe",
-      "awayTeam": "Walsall"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Grimsby",
+      "awayTeam": "Fleetwood Town"
     },
     {
-      "id": "e3-2026-03-14-fleetwood-town-tranmere",
+      "id": "e3-2026-03-17-salford-barrow",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Fleetwood Town",
-      "awayTeam": "Tranmere"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Salford",
+      "awayTeam": "Barrow"
     },
     {
-      "id": "e3-2026-03-14-oldham-grimsby",
+      "id": "e3-2026-03-17-tranmere-harrogate",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Oldham",
-      "awayTeam": "Grimsby"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Tranmere",
+      "awayTeam": "Harrogate"
     },
     {
-      "id": "e3-2026-03-14-shrewsbury-cheltenham",
+      "id": "e3-2026-03-17-walsall-cambridge",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Shrewsbury",
-      "awayTeam": "Cheltenham"
+      "dateISO": "2026-03-17",
+      "homeTeam": "Walsall",
+      "awayTeam": "Cambridge"
     },
     {
-      "id": "e3-2026-03-14-swindon-milton-keynes-dons",
+      "id": "e3-2026-03-18-milton-keynes-dons-colchester",
       "league": "E3",
-      "dateISO": "2026-03-14",
-      "homeTeam": "Swindon",
-      "awayTeam": "Milton Keynes Dons"
+      "dateISO": "2026-03-18",
+      "homeTeam": "Milton Keynes Dons",
+      "awayTeam": "Colchester"
     }
   ]
 }
