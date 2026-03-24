@@ -227,6 +227,13 @@
       "dateISO": "2026-03-21",
       "homeTeam": "Wigan",
       "awayTeam": "Exeter"
+    },
+    {
+      "id": "e2-2026-03-24-doncaster-port-vale",
+      "league": "E2",
+      "dateISO": "2026-03-24",
+      "homeTeam": "Doncaster",
+      "awayTeam": "Port Vale"
     }
   ],
   "E3": [
@@ -313,6 +320,13 @@
       "dateISO": "2026-03-21",
       "homeTeam": "Walsall",
       "awayTeam": "Newport County"
+    },
+    {
+      "id": "e3-2026-03-24-oldham-notts-county",
+      "league": "E3",
+      "dateISO": "2026-03-24",
+      "homeTeam": "Oldham",
+      "awayTeam": "Notts County"
     }
   ]
 }
