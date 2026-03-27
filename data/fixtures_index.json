@@ -229,10 +229,38 @@
       "awayTeam": "Exeter"
     },
     {
-      "id": "e2-2026-03-24-doncaster-port-vale",
+      "id": "e2-2026-03-28-blackpool-burton",
       "league": "E2",
-      "dateISO": "2026-03-24",
-      "homeTeam": "Doncaster",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Blackpool",
+      "awayTeam": "Burton"
+    },
+    {
+      "id": "e2-2026-03-28-exeter-leyton-orient",
+      "league": "E2",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Exeter",
+      "awayTeam": "Leyton Orient"
+    },
+    {
+      "id": "e2-2026-03-28-reading-wigan",
+      "league": "E2",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Reading",
+      "awayTeam": "Wigan"
+    },
+    {
+      "id": "e2-2026-03-28-stockport-afc-wimbledon",
+      "league": "E2",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Stockport",
+      "awayTeam": "AFC Wimbledon"
+    },
+    {
+      "id": "e2-2026-03-28-wycombe-port-vale",
+      "league": "E2",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Wycombe",
       "awayTeam": "Port Vale"
     }
   ],
@@ -322,11 +350,74 @@
       "awayTeam": "Newport County"
     },
     {
-      "id": "e3-2026-03-24-oldham-notts-county",
+      "id": "e3-2026-03-28-harrogate-notts-county",
       "league": "E3",
-      "dateISO": "2026-03-24",
-      "homeTeam": "Oldham",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Harrogate",
       "awayTeam": "Notts County"
+    },
+    {
+      "id": "e3-2026-03-28-barnet-cambridge",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Barnet",
+      "awayTeam": "Cambridge"
+    },
+    {
+      "id": "e3-2026-03-28-barrow-bromley",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Barrow",
+      "awayTeam": "Bromley"
+    },
+    {
+      "id": "e3-2026-03-28-bristol-rvs-accrington",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Bristol Rvs",
+      "awayTeam": "Accrington"
+    },
+    {
+      "id": "e3-2026-03-28-colchester-walsall",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Colchester",
+      "awayTeam": "Walsall"
+    },
+    {
+      "id": "e3-2026-03-28-crawley-town-gillingham",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Crawley Town",
+      "awayTeam": "Gillingham"
+    },
+    {
+      "id": "e3-2026-03-28-crewe-oldham",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Crewe",
+      "awayTeam": "Oldham"
+    },
+    {
+      "id": "e3-2026-03-28-newport-county-shrewsbury",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Newport County",
+      "awayTeam": "Shrewsbury"
+    },
+    {
+      "id": "e3-2026-03-28-salford-milton-keynes-dons",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Salford",
+      "awayTeam": "Milton Keynes Dons"
+    },
+    {
+      "id": "e3-2026-03-28-swindon-fleetwood-town",
+      "league": "E3",
+      "dateISO": "2026-03-28",
+      "homeTeam": "Swindon",
+      "awayTeam": "Fleetwood Town"
     }
   ]
 }
