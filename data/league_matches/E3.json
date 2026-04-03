@@ -8532,6 +8532,24 @@
     "AvgUnder25": 1.84
   },
   {
+    "dateISO": "2026-04-02",
+    "Div": "E3",
+    "HomeTeam": "Cambridge",
+    "AwayTeam": "Swindon",
+    "FTHG": 1,
+    "FTAG": 1,
+    "HS": 20,
+    "HST": 6,
+    "AS": 4,
+    "AST": 1,
+    "FTR": "D",
+    "AvgH": 1.69,
+    "AvgD": 3.61,
+    "AvgA": 4.64,
+    "AvgOver25": 1.9,
+    "AvgUnder25": 1.82
+  },
+  {
     "dateISO": "2024-08-09",
     "Div": "E3",
     "HomeTeam": "Chesterfield",

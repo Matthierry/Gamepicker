@@ -81,13 +81,6 @@
   ],
   "E2": [
     {
-      "id": "e2-2026-04-02-wigan-leyton-orient",
-      "league": "E2",
-      "dateISO": "2026-04-02",
-      "homeTeam": "Wigan",
-      "awayTeam": "Leyton Orient"
-    },
-    {
       "id": "e2-2026-04-03-doncaster-mansfield",
       "league": "E2",
       "dateISO": "2026-04-03",
@@ -159,13 +152,6 @@
     }
   ],
   "E3": [
-    {
-      "id": "e3-2026-04-02-cambridge-swindon",
-      "league": "E3",
-      "dateISO": "2026-04-02",
-      "homeTeam": "Cambridge",
-      "awayTeam": "Swindon"
-    },
     {
       "id": "e3-2026-04-03-accrington-crewe",
       "league": "E3",
