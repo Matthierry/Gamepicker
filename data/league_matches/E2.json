@@ -8784,6 +8784,24 @@
     "AvgUnder25": 1.79
   },
   {
+    "dateISO": "2026-04-07",
+    "Div": "E2",
+    "HomeTeam": "Port Vale",
+    "AwayTeam": "Rotherham",
+    "FTHG": 1,
+    "FTAG": 0,
+    "HS": 7,
+    "HST": 2,
+    "AS": 10,
+    "AST": 5,
+    "FTR": "H",
+    "AvgH": 2.46,
+    "AvgD": 3.24,
+    "AvgA": 2.79,
+    "AvgOver25": 2.09,
+    "AvgUnder25": 1.68
+  },
+  {
     "dateISO": "2024-08-09",
     "Div": "E2",
     "HomeTeam": "Barnsley",

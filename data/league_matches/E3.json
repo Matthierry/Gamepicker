@@ -8946,6 +8946,24 @@
     "AvgUnder25": 1.76
   },
   {
+    "dateISO": "2026-04-07",
+    "Div": "E3",
+    "HomeTeam": "Bromley",
+    "AwayTeam": "Shrewsbury",
+    "FTHG": 2,
+    "FTAG": 1,
+    "HS": 11,
+    "HST": 4,
+    "AS": 7,
+    "AST": 3,
+    "FTR": "H",
+    "AvgH": 1.66,
+    "AvgD": 3.53,
+    "AvgA": 5.27,
+    "AvgOver25": 2.21,
+    "AvgUnder25": 1.61
+  },
+  {
     "dateISO": "2024-08-09",
     "Div": "E3",
     "HomeTeam": "Chesterfield",
