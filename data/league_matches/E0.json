@@ -5724,6 +5724,24 @@
     "AvgUnder25": 2.4
   },
   {
+    "dateISO": "2026-04-13",
+    "Div": "E0",
+    "HomeTeam": "Man United",
+    "AwayTeam": "Leeds",
+    "FTHG": 1,
+    "FTAG": 2,
+    "HS": 20,
+    "HST": 9,
+    "AS": 15,
+    "AST": 6,
+    "FTR": "A",
+    "AvgH": 1.59,
+    "AvgD": 4.07,
+    "AvgA": 5.3,
+    "AvgOver25": 1.68,
+    "AvgUnder25": 2.11
+  },
+  {
     "dateISO": "2024-08-16",
     "Div": "E0",
     "HomeTeam": "Man United",
