@@ -9108,6 +9108,24 @@
     "AvgUnder25": 2.25
   },
   {
+    "dateISO": "2026-04-16",
+    "Div": "E2",
+    "HomeTeam": "Peterboro",
+    "AwayTeam": "Port Vale",
+    "FTHG": 1,
+    "FTAG": 3,
+    "HS": 17,
+    "HST": 3,
+    "AS": 7,
+    "AST": 4,
+    "FTR": "A",
+    "AvgH": 1.81,
+    "AvgD": 3.65,
+    "AvgA": 3.99,
+    "AvgOver25": 1.7,
+    "AvgUnder25": 2.05
+  },
+  {
     "dateISO": "2024-08-09",
     "Div": "E2",
     "HomeTeam": "Barnsley",
