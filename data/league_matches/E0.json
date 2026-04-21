@@ -5904,6 +5904,24 @@
     "AvgUnder25": 1.82
   },
   {
+    "dateISO": "2026-04-20",
+    "Div": "E0",
+    "HomeTeam": "Crystal Palace",
+    "AwayTeam": "West Ham",
+    "FTHG": 0,
+    "FTAG": 0,
+    "HS": 9,
+    "HST": 1,
+    "AS": 9,
+    "AST": 4,
+    "FTR": "D",
+    "AvgH": 2.31,
+    "AvgD": 3.21,
+    "AvgA": 3.11,
+    "AvgOver25": 1.88,
+    "AvgUnder25": 1.87
+  },
+  {
     "dateISO": "2024-08-16",
     "Div": "E0",
     "HomeTeam": "Man United",
