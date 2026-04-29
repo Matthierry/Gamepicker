@@ -9702,6 +9702,24 @@
     "AvgUnder25": 2.09
   },
   {
+    "dateISO": "2026-04-28",
+    "Div": "E1",
+    "HomeTeam": "Southampton",
+    "AwayTeam": "Ipswich",
+    "FTHG": 2,
+    "FTAG": 2,
+    "HS": 18,
+    "HST": 4,
+    "AS": 19,
+    "AST": 9,
+    "FTR": "D",
+    "AvgH": 2.18,
+    "AvgD": 3.5,
+    "AvgA": 3.08,
+    "AvgOver25": 1.69,
+    "AvgUnder25": 2.1
+  },
+  {
     "dateISO": "2024-08-09",
     "Div": "E1",
     "HomeTeam": "Blackburn",
