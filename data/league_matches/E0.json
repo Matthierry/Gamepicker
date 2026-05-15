@@ -6462,6 +6462,24 @@
     "AvgUnder25": 2.09
   },
   {
+    "dateISO": "2026-05-13",
+    "Div": "E0",
+    "HomeTeam": "Man City",
+    "AwayTeam": "Crystal Palace",
+    "FTHG": 3,
+    "FTAG": 0,
+    "HS": 15,
+    "HST": 4,
+    "AS": 6,
+    "AST": 2,
+    "FTR": "H",
+    "AvgH": 1.19,
+    "AvgD": 7.03,
+    "AvgA": 12.75,
+    "AvgOver25": 1.4,
+    "AvgUnder25": 2.84
+  },
+  {
     "dateISO": "2024-08-16",
     "Div": "E0",
     "HomeTeam": "Man United",
