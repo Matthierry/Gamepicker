@@ -1,60 +1,18 @@
 {
   "E0": [
     {
-      "id": "e0-2026-05-15-aston-villa-liverpool",
+      "id": "e0-2026-05-19-bournemouth-man-city",
       "league": "E0",
-      "dateISO": "2026-05-15",
-      "homeTeam": "Aston Villa",
-      "awayTeam": "Liverpool"
+      "dateISO": "2026-05-19",
+      "homeTeam": "Bournemouth",
+      "awayTeam": "Man City"
     },
     {
-      "id": "e0-2026-05-17-man-united-nott'm-forest",
+      "id": "e0-2026-05-19-chelsea-tottenham",
       "league": "E0",
-      "dateISO": "2026-05-17",
-      "homeTeam": "Man United",
-      "awayTeam": "Nott'm Forest"
-    },
-    {
-      "id": "e0-2026-05-17-brentford-crystal-palace",
-      "league": "E0",
-      "dateISO": "2026-05-17",
-      "homeTeam": "Brentford",
-      "awayTeam": "Crystal Palace"
-    },
-    {
-      "id": "e0-2026-05-17-everton-sunderland",
-      "league": "E0",
-      "dateISO": "2026-05-17",
-      "homeTeam": "Everton",
-      "awayTeam": "Sunderland"
-    },
-    {
-      "id": "e0-2026-05-17-leeds-brighton",
-      "league": "E0",
-      "dateISO": "2026-05-17",
-      "homeTeam": "Leeds",
-      "awayTeam": "Brighton"
-    },
-    {
-      "id": "e0-2026-05-17-wolves-fulham",
-      "league": "E0",
-      "dateISO": "2026-05-17",
-      "homeTeam": "Wolves",
-      "awayTeam": "Fulham"
-    },
-    {
-      "id": "e0-2026-05-17-newcastle-west-ham",
-      "league": "E0",
-      "dateISO": "2026-05-17",
-      "homeTeam": "Newcastle",
-      "awayTeam": "West Ham"
-    },
-    {
-      "id": "e0-2026-05-18-arsenal-burnley",
-      "league": "E0",
-      "dateISO": "2026-05-18",
-      "homeTeam": "Arsenal",
-      "awayTeam": "Burnley"
+      "dateISO": "2026-05-19",
+      "homeTeam": "Chelsea",
+      "awayTeam": "Tottenham"
     }
   ],
   "E1": [],
