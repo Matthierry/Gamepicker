@@ -1,18 +1,74 @@
 {
   "E0": [
     {
-      "id": "e0-2026-05-19-bournemouth-man-city",
+      "id": "e0-2026-05-24-brighton-man-united",
       "league": "E0",
-      "dateISO": "2026-05-19",
-      "homeTeam": "Bournemouth",
-      "awayTeam": "Man City"
+      "dateISO": "2026-05-24",
+      "homeTeam": "Brighton",
+      "awayTeam": "Man United"
     },
     {
-      "id": "e0-2026-05-19-chelsea-tottenham",
+      "id": "e0-2026-05-24-burnley-wolves",
       "league": "E0",
-      "dateISO": "2026-05-19",
-      "homeTeam": "Chelsea",
-      "awayTeam": "Tottenham"
+      "dateISO": "2026-05-24",
+      "homeTeam": "Burnley",
+      "awayTeam": "Wolves"
+    },
+    {
+      "id": "e0-2026-05-24-crystal-palace-arsenal",
+      "league": "E0",
+      "dateISO": "2026-05-24",
+      "homeTeam": "Crystal Palace",
+      "awayTeam": "Arsenal"
+    },
+    {
+      "id": "e0-2026-05-24-fulham-newcastle",
+      "league": "E0",
+      "dateISO": "2026-05-24",
+      "homeTeam": "Fulham",
+      "awayTeam": "Newcastle"
+    },
+    {
+      "id": "e0-2026-05-24-liverpool-brentford",
+      "league": "E0",
+      "dateISO": "2026-05-24",
+      "homeTeam": "Liverpool",
+      "awayTeam": "Brentford"
+    },
+    {
+      "id": "e0-2026-05-24-man-city-aston-villa",
+      "league": "E0",
+      "dateISO": "2026-05-24",
+      "homeTeam": "Man City",
+      "awayTeam": "Aston Villa"
+    },
+    {
+      "id": "e0-2026-05-24-nott'm-forest-bournemouth",
+      "league": "E0",
+      "dateISO": "2026-05-24",
+      "homeTeam": "Nott'm Forest",
+      "awayTeam": "Bournemouth"
+    },
+    {
+      "id": "e0-2026-05-24-sunderland-chelsea",
+      "league": "E0",
+      "dateISO": "2026-05-24",
+      "homeTeam": "Sunderland",
+      "awayTeam": "Chelsea"
+    },
+    {
+      "id": "e0-2026-05-24-tottenham-everton",
+      "league": "E0",
+      "dateISO": "2026-05-24",
+      "homeTeam": "Tottenham",
+      "awayTeam": "Everton"
+    },
+    {
+      "id": "e0-2026-05-24-west-ham-leeds",
+      "league": "E0",
+      "dateISO": "2026-05-24",
+      "homeTeam": "West Ham",
+      "awayTeam": "Leeds"
     }
   ],
   "E1": [],
